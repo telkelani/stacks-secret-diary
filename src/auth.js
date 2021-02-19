@@ -1,14 +1,14 @@
 import { AppConfig, UserSession, showConnect } from '@stacks/connect';
 import { Person } from '@stacks/profile';
 
-const appConfig = new AppConfig(['store_write', 'publish_data']);
+const appConfig = new AppConfig(['store_write']);
 
 export const userSession = new UserSession({ appConfig });
 
 export function authenticate() {
   showConnect({
     appDetails: {
-      name: 'Todos',
+      name: 'BWUNO.',
       icon: window.location.origin + '/logo.svg',
     },
     redirectTo: '/',
