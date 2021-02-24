@@ -6,7 +6,7 @@ import eraser from '../jQuery.eraser-master/jquery.eraser.js'
 function redirect(){
     window.location.replace("/"+process.env.REACT_APP_SECRET_ROUTE)
 }
-export function CovertPage(){
+export function CovertPage(props){
     $(function(){
         $('#uwucat').eraser({
             size: 80,
@@ -18,6 +18,7 @@ export function CovertPage(){
     return (
         <div>
             <img src={uwucat} id="uwucat" width="20%" height="20%"></img>
+          
         </div>)
 }
 
