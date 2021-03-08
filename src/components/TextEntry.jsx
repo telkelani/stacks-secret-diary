@@ -1,8 +1,9 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import Card from 'react-bootstrap/Card'
 
 
 export function TextEntry({textEntry}){
+
     return (
     <Card style={{marginBottom:"5vh", width: "50rem"}}>
         <Card.Body >
