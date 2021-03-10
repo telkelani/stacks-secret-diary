@@ -3,7 +3,7 @@ import {Article} from './Article'
 
 export function Country({code}){
     const [articles, setArticles] = useState([])
-    const url= "https://newsapi.org/v2/top-headlines?country="+code+"&apiKey=34f379e714684d2a8bf6b204b6b5f672"
+    const url= "https://newsapi.org/v2/top-headlines?country="+code+"&apiKey="+process.env.NEWS_API_KEY
     useEffect(() => {
         fetch(url)
         .then(async (response) => {
