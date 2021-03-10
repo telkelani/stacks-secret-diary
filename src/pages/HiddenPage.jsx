@@ -9,6 +9,7 @@ import {TextEntries} from './TextEntries'
 import {VideoEntries} from './VideoEntries'
 
 export function HiddenPage(){
+
   const nopadding = {
     paddingLeft: 0,
     paddingRight: 0

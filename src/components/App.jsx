@@ -1,5 +1,5 @@
 import React, { Component, useState } from 'react';
-import { CovertPage } from '../pages/Covert'
+import { CovertPage } from '../pages/covert_components/Covert'
 import { Signin } from '../pages/Signin';
 import { HiddenPage } from '../pages/HiddenPage';
 import { userSession } from '../auth';
@@ -7,6 +7,7 @@ import {Route, BrowserRouter as Router, Switch} from 'react-router-dom'
 import { v4 as uuid } from 'uuid';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {EntryProvider} from '../providers/EntryProvider'
+export var secret_path = "/"+process.env.REACT_APP_SECRET_ROUTE;
 
 export default class App extends Component {
   state = {
@@ -19,11 +20,6 @@ export default class App extends Component {
     userSession.signUserOut(window.location.origin);
   }
 
-  generateRoute(){
-    var crypto = require("crypto")
-    var secret_path = crypto.randomBytes(16).toString('hex')
-    return secret_path
-  }
   render() {
     const containerStyle={
       marginLeft: 0,
@@ -32,7 +28,7 @@ export default class App extends Component {
       paddingRight: 0
     }
 
-    var secret_path = "/"+process.env.REACT_APP_SECRET_ROUTE;
+    
     //var secret_path = this.generateRoute()
     return (
       //Put the provider in the app so that ALL components have access to Entry state
@@ -45,7 +41,6 @@ export default class App extends Component {
               <Route path={secret_path} exact >
                 {!userSession.isUserSignedIn() ? <Signin /> : <HiddenPage />}
               </Route> 
-            
               <Route path="/" exact component={CovertPage} />
           </Switch>
         </Router>

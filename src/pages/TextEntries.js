@@ -30,17 +30,17 @@ export function TextEntries(){
      */
     const [textEntries, setTextEntry] = useContext(EntryContext)
 
+    /*useEffect renders this function when the DOM renders
+    * The second  argument specifies that this should only when the page is loaded (mounted)*/
     useEffect( () => {
-        getEntries()
-            
-
-            
-            
-        
-        
-        
+        getEntries()      
     },[])
 
+
+    /**
+     * Get entries = fetch the JSON file of all the entries from Gaia and then set them as the new state
+     * 
+     */
     const getEntries = async () => {
         try{
             let fetchedEntries = await getEntriesFromGaia()
@@ -81,6 +81,7 @@ export function TextEntries(){
                     text:value
                 }]
                 saveEntry(newEntries)
+                
                 if (newEntries[0].text=="No entries"){
                     newEntries = newEntries.slice(1,)
                 }
@@ -109,7 +110,7 @@ export function TextEntries(){
             textEntry={textEntry}
              />)
             }
-            {<button onClick={() => getEntries()}>GAIA RETRIEVE</button>}
+            {/* {<button onClick={() => getEntries()}>GAIA RETRIEVE</button>} */}
             {/* <input id="uwu"></input> */}
             {/* <button onClick={() => saveEntry(document.getElementById("uwu").value)}>GAIA SAVE</button> */}
             <Button variant="primary" style={{width:"50rem"}} onClick={handleShow}>Add Entry</Button>
