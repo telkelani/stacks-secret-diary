@@ -8,8 +8,8 @@ export const userSession = new UserSession({ appConfig });
 export function authenticate() {
   showConnect({
     appDetails: {
-      name: 'BWUNO.',
-      icon: window.location.origin + '/logo.svg',
+      name: 'GeoTwivia',
+      icon: window.location.origin + '/geologo.png',
     },
     redirectTo: '/',
     finished: () => {
