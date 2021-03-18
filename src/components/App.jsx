@@ -1,12 +1,14 @@
 import React, { Component, useState } from 'react';
-import { CovertPage } from '../pages/covert_components/Covert'
-import { Signin } from '../pages/Signin';
-import { HiddenPage } from '../pages/HiddenPage';
+import {CovertGeo} from '../pages/covert_geo_components/CovertGeo'
+import { Signin } from '../pages/hidden_page_components/Signin';
+import { HiddenPage } from '../pages/hidden_page_components/HiddenPage';
 import { userSession } from '../auth';
 import {Route, BrowserRouter as Router, Switch} from 'react-router-dom'
-import { v4 as uuid } from 'uuid';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import {EntryProvider} from '../providers/EntryProvider'
+
+import 'bootstrap/dist/css/bootstrap.min.css';
+import "video-react/dist/video-react.css"; 
+
 export var secret_path = "/"+process.env.REACT_APP_SECRET_ROUTE;
 
 export default class App extends Component {
@@ -28,7 +30,7 @@ export default class App extends Component {
       paddingRight: 0
     }
 
-    
+ 
     //var secret_path = this.generateRoute()
     return (
       //Put the provider in the app so that ALL components have access to Entry state
@@ -41,7 +43,7 @@ export default class App extends Component {
               <Route path={secret_path} exact >
                 {!userSession.isUserSignedIn() ? <Signin /> : <HiddenPage />}
               </Route> 
-              <Route path="/" exact component={CovertPage} />
+              <Route path="/" exact component={CovertGeo} />
           </Switch>
         </Router>
 
@@ -59,12 +61,14 @@ export default class App extends Component {
 
   componentDidMount() {
     if (userSession.isSignInPending()) {
-      userSession.handlePendingSignIn().then(userData => {
-        window.history.replaceState({}, document.title, '/');
+      userSession.handlePendingSignIn().then(userData => { 
+        window.location.replace(secret_path); //For this to work on mobile had to do this
+        //Before it would go back to the home page when authenticate d
         this.setState({ userData: userData });
       });
     } else if (userSession.isUserSignedIn()) {
       this.setState({ userData: userSession.loadUserData() });
     }
   }
+
 }

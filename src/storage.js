@@ -13,6 +13,7 @@ let fileName = 'new_entries.json'
 
 export const saveEntriesToGaia = (entry) => {
     storage.putFile(fileName, JSON.stringify({ entry })).then(result => {console.log(result)})
+    
   };
 
 export async function getEntriesFromGaia(){
