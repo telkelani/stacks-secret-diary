@@ -10,7 +10,7 @@ export function TextEntry({textEntry}){
         
     }
     return (
-        <Card style={{background: '#40eddc'}}>
+        <Card style={{background: '#40eddc', marginTop: '2vh', marginBottom: '2vh'}}>
             <Card.Body >
                 <Card.Title>{textEntry.date}</Card.Title>
                     <Card.Text style={{textAlign: "left"}}>

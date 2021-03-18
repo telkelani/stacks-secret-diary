@@ -70,10 +70,10 @@ export function TextEntries(){
         }
         if (value.trim() == ''){
             
-            alert("Input something dummy")
+            alert("Please enter some text")
         }
         else{
-            const confirmed = window.confirm("you gucci?")
+            const confirmed = window.confirm("Are you sure you want to add entry? Remember, you cannot edit the entry once it is added")
             if (confirmed){
                 
                 setEntries(prevState => {
