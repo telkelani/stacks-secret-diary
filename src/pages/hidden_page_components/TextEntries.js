@@ -139,7 +139,8 @@ export function TextEntries(){
             console.log("Parsed DATE", entry_date)
             if (startDate != null && endDate!= null){
                 console.log("condition "+new Date(entry.date) >= startDate && new Date(entry.date) <= endDate)
-               return  (entry_date >= startDate && entry_date <= endDate)
+               return  entry.text.toLowerCase().indexOf(query.toLowerCase()) !== -1 && 
+               (entry_date >= startDate && entry_date <= endDate)
 
             }
             return entry.text.toLowerCase().indexOf(query.toLowerCase()) !== -1 
