@@ -56,7 +56,12 @@ export function TextEntries(){
         try{
             let fetchedEntries = await getEntriesFromGaia()
             let new_state = fetchedEntries.entry
+            if (new_state[0].text=="No entries"){
+                    
+                new_state = new_state.slice(1,)
+            }
             setEntries(new_state)
+            console.log(new_state)
         }
 
         catch (e) {
@@ -89,8 +94,9 @@ export function TextEntries(){
                     text:value
                 }]
                 saveEntry(newEntries)
-                
+                console.log(newEntries)
                 if (newEntries[0].text=="No entries"){
+                    
                     newEntries = newEntries.slice(1,)
                 }
                 return newEntries
@@ -121,9 +127,6 @@ export function TextEntries(){
                (entry_date >= startDate && entry_date <= endDate)
 
             }
-            console.log(startDate)
-            console.log(endDate)
-            console.log(entry_date >= startDate && entry_date <= endDate)
             return entry.text.toLowerCase().indexOf(query.toLowerCase()) !== -1 
             
 
@@ -158,18 +161,18 @@ export function TextEntries(){
             </Form>
 
             <Row style={{marginBottom: '5vh'}}>
-                <Col className="text-left"> 
+                <Col xs={12} md={3}> 
                     <p>Search by Date and Time</p>
                 </Col>
-                <Col >
+                <Col xs={11} md={4}>
                     From:
                     <DatePicker  selected={startDate} onChange={setStartDate} startDate={startDate} endDate={endDate}  dateFormat="yyyy-MM-dd" > </DatePicker>
 
                 </Col>
 
-                <Col className="text-right">
+                <Col xs={11} md={4}>
                 To:
-                    <DatePicker   dateFormat="yyyy-MM-dd"  selected={endDate} onChange={setEndDate}  minDate={startDate} > </DatePicker>
+                    <DatePicker   dateFormat="yyyy-MM-dd"  selected={endDate} onChange={setEndDate} endDate={endDate} minDate={startDate} > </DatePicker>
                 </Col>
             </Row>
             
