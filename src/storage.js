@@ -28,10 +28,7 @@ export async function getEntriesFromGaia(){
     }
 
     catch( error ){
-        const defaultEntry =  {entry: [{text: 'No entries'}]}
-        const json_string = JSON.stringify(defaultEntry)
-        const json = JSON.parse(json_string)
-        return json
+        alert("Currently have no entries") //This is better because I am not adding an entry that says No entries, the json will just be the entries
     }
         
 
