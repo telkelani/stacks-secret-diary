@@ -56,10 +56,6 @@ export function TextEntries(){
         try{
             let fetchedEntries = await getEntriesFromGaia()
             let new_state = fetchedEntries.entry
-            if (new_state[0].text=="No entries"){
-                    
-                new_state = new_state.slice(1,)
-            }
             setEntries(new_state)
             console.log(new_state)
         }
@@ -94,11 +90,7 @@ export function TextEntries(){
                     text:value
                 }]
                 saveEntry(newEntries)
-                console.log(newEntries)
-                if (newEntries[0].text=="No entries"){
-                    
-                    newEntries = newEntries.slice(1,)
-                }
+                
                 return newEntries
                 })
                     
@@ -166,13 +158,13 @@ export function TextEntries(){
                 </Col>
                 <Col xs={11} md={4}>
                     From:
-                    <DatePicker  selected={startDate} onChange={setStartDate} startDate={startDate} endDate={endDate}  dateFormat="yyyy-MM-dd" > </DatePicker>
+                    <DatePicker timeFormat="HH:mm:ss"    dateFormat="yyyy-MM-dd HH:mm:ss" showTimeInput isClearable selected={startDate} onChange={setStartDate} startDate={startDate} endDate={endDate}  > </DatePicker>
 
                 </Col>
 
                 <Col xs={11} md={4}>
                 To:
-                    <DatePicker   dateFormat="yyyy-MM-dd"  selected={endDate} onChange={setEndDate} endDate={endDate} minDate={startDate} > </DatePicker>
+                    <DatePicker timeFormat="HH:mm:ss" dateFormat="yyyy-MM-dd HH:mm:ss"  showTimeInput isClearable  selected={endDate} onChange={setEndDate} endDate={endDate} minDate={startDate} > </DatePicker>
                 </Col>
             </Row>
             
