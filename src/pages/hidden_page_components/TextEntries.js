@@ -113,10 +113,33 @@ export function TextEntries(){
     const displayEntries = () => {
         
         let entriestodisplay = entries.filter(function(entry){
-            var entry_date = new Date(entry.date)
+            
+            //Parse entry date (It isnt parsed properly in mobile)
+            //Break down timestamp into its date and time parts
+            let splitted_datetime = entry.date.split(" ")
+            let splitted_date = splitted_datetime[0].split("-") 
+            let splitted_time = splitted_datetime[1].split(":")
+        
+            console.log("entry date string "+entry.date)
+            console.log(splitted_datetime)
+            console.log("entry date "+ splitted_date)
+            console.log("entry time "+ splitted_time)
+            console.log("start date "+startDate)
+            console.log("end date "+endDate)
+
+            let entry_date = new Date(splitted_date[0],splitted_date[1]-1,splitted_date[2],splitted_time[0]
+                ,splitted_time[1],splitted_time[2]) 
+                //Parsing date using new Date(string) was problematic for mobile
+                //Had to break down the date into separate parts and create a new date object where the year, month, day, etc 
+                //is a separate argument
+                //Month is -1 as January in javascript is 0 not 1
+            
+
+            
+            console.log("Parsed DATE", entry_date)
             if (startDate != null && endDate!= null){
-               return entry.text.toLowerCase().indexOf(query.toLowerCase()) !== -1 &&
-               (entry_date >= startDate && entry_date <= endDate)
+                console.log("condition "+new Date(entry.date) >= startDate && new Date(entry.date) <= endDate)
+               return  (entry_date >= startDate && entry_date <= endDate)
 
             }
             return entry.text.toLowerCase().indexOf(query.toLowerCase()) !== -1 
@@ -158,13 +181,13 @@ export function TextEntries(){
                 </Col>
                 <Col xs={11} md={4}>
                     From:
-                    <DatePicker timeFormat="HH:mm:ss"    dateFormat="yyyy-MM-dd HH:mm:ss" showTimeInput isClearable selected={startDate} onChange={setStartDate} startDate={startDate} endDate={endDate}  > </DatePicker>
+                    <DatePicker timeFormat="HH:mm:ss"    dateFormat="yyyy-MM-dd HH:mm:ss" showTimeInput isClearable selected={startDate} onChange={(e) => setStartDate(e)} startDate={startDate} endDate={endDate}  > </DatePicker>
 
                 </Col>
 
                 <Col xs={11} md={4}>
                 To:
-                    <DatePicker timeFormat="HH:mm:ss" dateFormat="yyyy-MM-dd HH:mm:ss"  showTimeInput isClearable  selected={endDate} onChange={setEndDate} endDate={endDate} minDate={startDate} > </DatePicker>
+                    <DatePicker timeFormat="HH:mm:ss" dateFormat="yyyy-MM-dd HH:mm:ss"  showTimeInput isClearable  selected={endDate} onChange={(e)=>setEndDate(e)} endDate={endDate} minDate={startDate} > </DatePicker>
                 </Col>
             </Row>
             
