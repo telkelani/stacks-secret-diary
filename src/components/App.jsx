@@ -8,6 +8,8 @@ import {EntryProvider} from '../providers/EntryProvider'
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "video-react/dist/video-react.css"; 
+import "react-datepicker/dist/react-datepicker.css";
+import 'react-datepicker/dist/react-datepicker-cssmodules.css';
 
 export var secret_path = "/"+process.env.REACT_APP_SECRET_ROUTE;
 

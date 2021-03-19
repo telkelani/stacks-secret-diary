@@ -5,16 +5,24 @@ import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
 import { v4 as uuid } from 'uuid';
 import {saveEntriesToGaia, getEntriesFromGaia} from '../../storage'
-import Card from 'react-bootstrap/Card'
+import { Form } from 'react-bootstrap'
+import DatePicker from 'react-datepicker'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
-import Container from 'react-bootstrap/Container'
+
 function getTimeStamp(){
     const now = new Date().toISOString()
     const date = now.split("T")[0]
     const time = now.substring(now.indexOf("T")+1,now.indexOf("."))
     return date+" "+time
 }   
+
+function getDate(date){
+    const input_date = date.toISOString()
+    const new_date = input_date.split("T")[0]
+    const time = input_date.substring(input_date.indexOf("T")+1,input_date.indexOf("."))
+    return new_date+" "+time
+}
 
 
 export function TextEntries(){
@@ -48,9 +56,6 @@ export function TextEntries(){
         try{
             let fetchedEntries = await getEntriesFromGaia()
             let new_state = fetchedEntries.entry
-            if (new_state.length>1){
-                new_state = new_state.slice(1,)
-            }
             setEntries(new_state)
         }
 
@@ -102,19 +107,77 @@ export function TextEntries(){
     const saveEntry = (entry) => {
         saveEntriesToGaia(entry)
     }
+    const [query,setQuery] = useState('')
+
+    const [startDate, setStartDate] = useState(null)
+    const [endDate, setEndDate] = useState(null)
+
+    const displayEntries = () => {
+        
+        let entriestodisplay = entries.filter(function(entry){
+            var entry_date = new Date(entry.date)
+            if (startDate != null && endDate!= null){
+               return entry.text.toLowerCase().indexOf(query.toLowerCase()) !== -1 &&
+               (entry_date >= startDate && entry_date <= endDate)
+
+            }
+            console.log(startDate)
+            console.log(endDate)
+            console.log(entry_date >= startDate && entry_date <= endDate)
+            return entry.text.toLowerCase().indexOf(query.toLowerCase()) !== -1 
+            
 
 
+        })
+        
+        return entriestodisplay
 
+    }
+
+
+    let entriestodisplay = displayEntries()
+
+
+    const searchStyles= {
+        marginBottom: '5vh',
+        paddingLeft:'5%',paddingRight: '5%',paddingBottom:'2vh', boxShadow: '5px 5px 5px 5px black'}
 
     return (
         <div>
 
-       
 
             <h1>Journal Entries ✍</h1>
+            {/* Cant make this a separate function as the input loses focus when it gets called as a component as it 
+            DOM has to re render */}
+            <Form style={searchStyles}>
+                <Form.Group>
+                    <Form.Label>Search entry text</Form.Label>
+                    <Form.Control defaultValue={query} onChange={(e) =>  setQuery(e.target.value)} type="text"></Form.Control>
+                    
+                </Form.Group>
+            </Form>
 
+            <Row style={{marginBottom: '5vh'}}>
+                <Col className="text-left"> 
+                    <p>Search by Date and Time</p>
+                </Col>
+                <Col >
+                    From:
+                    <DatePicker  selected={startDate} onChange={setStartDate} startDate={startDate} endDate={endDate}  dateFormat="yyyy-MM-dd" > </DatePicker>
+
+                </Col>
+
+                <Col className="text-right">
+                To:
+                    <DatePicker   dateFormat="yyyy-MM-dd"  selected={endDate} onChange={setEndDate}  minDate={startDate} > </DatePicker>
+                </Col>
+            </Row>
             
-            {entries.reverse().map( (textEntry) => <TextEntry 
+            
+           
+            
+            
+            {entriestodisplay.reverse().map( (textEntry) => <TextEntry 
                 key={textEntry.id} 
                 textEntry={textEntry}
                 />)

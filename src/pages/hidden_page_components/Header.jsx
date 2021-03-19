@@ -1,12 +1,8 @@
 import React from 'react';
-import Container from 'react-bootstrap/Container'
 import {Navbar, Nav} from 'react-bootstrap'
 import Button from 'react-bootstrap/Button'
-import { getPerson, getUserData, userSession } from '../../auth';
-import {secret_path} from '../../components/App'
-import {UsefulLinks} from './UsefulLinks'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCoffee } from '@fortawesome/free-solid-svg-icons'
+import { userSession } from '../../auth';
+
 
 const SignOutButton = () => {
   if (!userSession.isUserSignedIn()) {
@@ -37,7 +33,7 @@ export function Header(){
       </Navbar.Collapse>
 
       <Navbar.Brand href="/">
-        <i class="fas fa-globe-americas" ></i>
+        <i className="fas fa-globe-americas" ></i>
       </Navbar.Brand>
 
       <SignOutButton />
