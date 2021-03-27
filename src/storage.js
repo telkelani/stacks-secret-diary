@@ -1,12 +1,7 @@
-import React from 'react'
+
 import { userSession } from './auth';
 import { Storage } from '@stacks/storage';
 const storage = new Storage({ userSession });
-export const defaultEntry = [{
-    id: 0,
-    date: '',
-    entry: ''
-} ]
 
 
 let fileName = 'new_entries.json'
