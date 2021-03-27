@@ -7,7 +7,6 @@ import { v4 as uuid } from 'uuid';
 import {saveEntriesToGaia, getEntriesFromGaia} from '../../storage'
 import {Search} from './Search'
 import {AddEntryModal} from './AddEntryModal'
-import ReactFileReader from 'react-file-reader';
 
 
 
