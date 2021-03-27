@@ -2,7 +2,6 @@ import React, {useState} from 'react'
 import {EntryContext} from '../../providers/EntryProvider'
 import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
-import ReactFileReader from 'react-file-reader';
 import ImageUploader from 'react-images-upload';
 // UI code for modal ( State is in parent )
 
