@@ -8,7 +8,7 @@ export const userSession = new UserSession({ appConfig });
 export function authenticate() {
   showConnect({
     appDetails: {
-      name: 'GeoTwivia',
+      name: 'CapitalTrivia',
       icon: window.location.origin + '/geologo.png',
     },
     redirectTo: '/',
