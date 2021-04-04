@@ -31,8 +31,8 @@ export const Signin = () => {
     <Container fluid style={containerStyles}>
         <Button style={buttonStyles} href="/">Back to Disguise Page</Button>
         <Jumbotron style={jumboStyles}>
-        <h1>Your evidence secured by Stacks</h1>
-        <p>Sign in to Stacks to control your data</p>
+        <h1>Your evidence secured by Blockstack</h1>
+        <p>Sign in to your journal with Blockstack to control your data</p>
 
         <Button className="sign-in-button" variant="secondary" onClick={() => authenticate()}>
         Sign in using Blockstack</Button>

@@ -21,18 +21,9 @@ export function Header(){
     justifyContent:"space-around",
     gap: "10vw"}
   return (
-    <Navbar expand="md"  bg="#8efa97">
+    <Navbar expand="md"   bg="#8efa97">
 
-      <Navbar.Toggle aria-controls="collapsed"></Navbar.Toggle>
-      
-      <Navbar.Collapse id="collapsed">
-        <Nav.Link>Text Entries</Nav.Link>
-        <Nav.Link>Video Entries (Coming Soon)</Nav.Link>
-        <Nav.Link>Audio Entries (Coming Soon)</Nav.Link>
-
-      </Navbar.Collapse>
-
-      <Navbar.Brand href="/">
+      <Navbar.Brand className="mr-auto" href="/">
         <i className="fas fa-globe-americas" ></i>
       </Navbar.Brand>
 
