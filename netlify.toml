@@ -1,7 +1,7 @@
 [[redirects]]
   from = "/undefined"
   to = "/"
-  force = true
+  force = false
 
 [[redirects]]
   from = "/*"
