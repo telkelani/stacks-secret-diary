@@ -4,13 +4,30 @@ import $ from 'jquery'
 import eraser from '../../jQuery.eraser-master/jquery.eraser.js'
 import {secret_path} from '../../components/App'
 import  Button  from 'react-bootstrap/Button'
+
+import { userSession } from '../../auth'
+import {Signin} from '../hidden_page_components/Signin'
+import {HiddenPage} from '../hidden_page_components/HiddenPage'
+import {Route} from 'react-router-dom'
+import {MemoryRouter as Router} from 'react-router'
 //This page is supposed to show up on load. 
 
 
-function redirect(){
+export function redirect(){
     
     window.location.replace(secret_path)
+    // console.log('uwu')
+    // return <h1>Hewwo</h1>
+    // var url = new URL(window.location.protocol+"//"+window.location.hostname+":"+window.location.port+secret_path)
+    // console.log("uwu")
+    // console.log(url)
+    // url.pathname = ''
     
+ 
+    
+    
+    // var pageToReturn = !userSession.isUserSignedIn() ? <Signin /> : <HiddenPage />
+    // return pageToReturn
     
 
 }

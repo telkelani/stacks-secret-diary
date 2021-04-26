@@ -4,6 +4,7 @@ import { Signin } from '../pages/hidden_page_components/Signin';
 import { HiddenPage } from '../pages/hidden_page_components/HiddenPage';
 import { userSession } from '../auth';
 import {Route, BrowserRouter as Router, Switch} from 'react-router-dom'
+import {MemoryRouter} from 'react-router'
 import {EntryProvider} from '../providers/EntryProvider'
 
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -42,11 +43,16 @@ export default class App extends Component {
 
         <Router>
           <Switch>
-              <Route path={secret_path} exact >
-                {!userSession.isUserSignedIn() ? <Signin /> : <HiddenPage />}
-              </Route> 
-              <Route path="/" exact component={CovertGeo} />
+              <Route path={secret_path} exact > 
+                  {!userSession.isUserSignedIn() ? <Signin /> : <HiddenPage />}
+              </Route>
+              
+              <Route path="/" exact>
+                  <CovertGeo />
+              </Route>
+              
           </Switch>
+          
         </Router>
 
         </EntryProvider>
