@@ -1,8 +1,9 @@
 import React from 'react'
-import { Form } from 'react-bootstrap'
+import  Form from 'react-bootstrap/Form'
 import DatePicker from 'react-datepicker'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
+import Button from 'react-bootstrap/Button'
 
 
 // Contains UI of Search functions (Separate component to not clutter TextEntries.js)
@@ -14,11 +15,20 @@ const searchStyles= {
 export function Search(props){
     return (
         <div>
-        <Form style={searchStyles}>
+        {/* Preventdefault on submit to stop enter key from refreshing page */}
+        <Form style={searchStyles} onSubmit={(e) => e.preventDefault()}>
         <Form.Group>
             <Form.Label>Search entry text</Form.Label>
-            <Form.Control defaultValue={props.query} onChange={(e) => props.setQuery(e.target.value)} type="text"></Form.Control>
+            <Form.Control defaultValue={props.query} onChange={(e) => 
+            {
+                
+                props.setQuery(e.target.value)
+            }
+                } type="text"></Form.Control>
             
+            {/* Button that doesn't do anything. The search is already
+                completed by the onChange event. */}
+            <Button>Search</Button>
         </Form.Group>
     </Form>
 
@@ -45,6 +55,16 @@ export function Search(props){
             onChange={(e)=>props.setEndDate(e)} 
             endDate={props.endDate} 
             minDate={props.startDate} > </DatePicker>
+        </Col>
+
+        {/* This is a search button that does not do anything 
+            This is because the search is carried out by onChange already 
+            doesn't make a difference 
+            The search button was added as survey respondents asked for it
+            although it technically isnt needed 
+            */}
+        <Col className="text-right">
+                <Button>Search By Date</Button>
         </Col>
     </Row>
         </div>
