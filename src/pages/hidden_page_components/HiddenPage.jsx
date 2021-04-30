@@ -5,7 +5,6 @@ import Col from 'react-bootstrap/Col'
 import {Header} from './Header'
 import { Link } from 'react-router-dom'
 import {TextEntries} from './TextEntries'
-import {VideoEntries} from './VideoEntries'
 import { UsefulLinks } from './UsefulLinks'
 
 export function HiddenPage(){
