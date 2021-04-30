@@ -26,8 +26,8 @@ export function TextEntries(){
      * Modal State variables
      */
     const [show, setShow] = useState(false);
-
     const [images,setImages] = useState([])
+    const [audios, setAudios] = useState([])
     const handleClose = () => setShow(false);
     const handleShow = () => {
         setImages([]) //When add Entry button is pressed, images are reset
@@ -57,6 +57,7 @@ export function TextEntries(){
         }
 
         catch (e) {
+            console.log(e.message)
             console.log("caught")
         }
 
@@ -65,8 +66,8 @@ export function TextEntries(){
 
 
 // Uploading Images on this component bcoz of state. the state has to be here in order for all the entries to be fetched
- const imageUpload =  (files) => {
-
+    const imageUpload =  (files) => {
+        console.log(files)
         files.forEach(file => {
             const reader = new FileReader()
             reader.readAsDataURL(file)
@@ -78,8 +79,28 @@ export function TextEntries(){
 
        
         }
-            
-    const addEntry = (value) => {
+    
+    const previewAudio = (e) => 
+        {
+            setAudios([])
+            let fileArray = Array.from(e.target.files)
+    
+            fileArray.forEach( file => {
+                const reader = new FileReader()
+                reader.readAsDataURL(file)
+                reader.onload = () => {
+                   const fileContent = reader.result
+                   console.log("file "+fileContent)
+                   setAudios(prev => [...prev,[file.name,fileContent]])
+                }
+            })
+        }
+
+ 
+
+        
+    console.log(audios)
+    const addEntry =  (value) => {
         if (value === ''){
             return
         }
@@ -96,7 +117,8 @@ export function TextEntries(){
                     id:uuid(),
                     date:getTimeStamp(),
                     text:value,
-                    images: images
+                    images: images,
+                    audios: audios
                 }]
 
                 saveEntry(newEntries)
@@ -158,8 +180,9 @@ export function TextEntries(){
 
     //This returns the entries based on search (If nothing is searched will just return all entries)
     let entriestodisplay = displayEntries() 
-
+    console.log(TextEntries)
     return (
+        
         <div>
 
             {/* Title */}
@@ -182,6 +205,7 @@ export function TextEntries(){
             handleClose={handleClose} 
             addEntry={addEntry}
             imageUpload={imageUpload}
+            previewAudio={previewAudio}
              /> 
             
             {/* Will display all entries in reverse order (most recent) */}

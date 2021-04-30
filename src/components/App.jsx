@@ -3,13 +3,12 @@ import {CovertGeo} from '../pages/covert_geo_components/CovertGeo'
 import { Signin } from '../pages/hidden_page_components/Signin';
 import { HiddenPage } from '../pages/hidden_page_components/HiddenPage';
 import { userSession } from '../auth';
-import { Route, Router, Switch} from 'react-router-dom'
+import { Route, BrowserRouter, Switch} from 'react-router-dom'
 import {MemoryRouter} from 'react-router'
 import { createBrowserHistory} from 'history'
 import {EntryProvider} from '../providers/EntryProvider'
 
 import 'bootstrap/dist/css/bootstrap.min.css';
-import "video-react/dist/video-react.css"; 
 import "react-datepicker/dist/react-datepicker.css";
 import 'react-datepicker/dist/react-datepicker-cssmodules.css';
 
@@ -42,7 +41,7 @@ export default class App extends Component {
         <EntryProvider>
 
 
-        <Router>
+        <BrowserRouter>
        
           <Switch>
             <Route path={secret_path} exact > 
@@ -55,7 +54,7 @@ export default class App extends Component {
               
           </Switch>
           
-        </Router>
+        </BrowserRouter>
 
         </EntryProvider>
   

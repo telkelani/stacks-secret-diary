@@ -1,12 +1,23 @@
-import React, {useState} from 'react'
+import React, {useState, useRef} from 'react'
 import {EntryContext} from '../../providers/EntryProvider'
 import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
 import ImageUploader from 'react-images-upload';
+
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
+
+import {AudioPlayer} from './AudioPlayer'
+
+
+
 // UI code for modal ( State is in parent )
 
 
 export function AddEntryModal(props){
+    const audioUploader = useRef(null)
+    const [audioFiles, setAudioFiles] = useState([])
+
     return (
         <div> 
             <Modal show={props.show} onHide={props.handleClose} animation={true}>
@@ -21,11 +32,30 @@ export function AddEntryModal(props){
 
             
 
+            <Row>
+                <Col>
+                <input ref={audioUploader} 
+                type="file" multiple={true}  accept="audio/*" onChange={(e) => props.previewAudio(e)}/>
                 
-            <ImageUploader 
-                withPreview
-                onChange={(e) => props.imageUpload(e)}>
-            </ImageUploader>
+                {audioFiles.map(file => 
+                
+                <AudioPlayer fileName={file[0]} audioFile={file[1]} />)}
+                
+
+                </Col>
+
+
+
+            </Row>
+
+            <Row>
+            <Col>
+                    <ImageUploader 
+                        withPreview
+                        onChange={(e) => props.imageUpload(e)}>
+                    </ImageUploader>
+                </Col>
+            </Row>
 
 
 

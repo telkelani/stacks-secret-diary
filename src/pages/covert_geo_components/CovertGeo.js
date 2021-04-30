@@ -7,8 +7,6 @@ import Header  from './HeaderGeo'
 import Container from 'react-bootstrap/Container'
 import axios from 'axios'
 import _ from 'underscore'
-import {Player} from 'video-react'
-import recording from '../../recording_projectdefinition.mp4'
 export var secret_path = "/"+process.env.REACT_APP_SECRET_ROUTE;
 
 //Styles
@@ -118,8 +116,6 @@ export function CovertGeo() {
    * 
    * @returns Game Component
    */
-   const vidJSON = JSON.stringify(recording)
-   const vid_parsed = JSON.parse(vidJSON)
 
   const cardStyle = {
     background: 'rgb(14, 192, 166)',

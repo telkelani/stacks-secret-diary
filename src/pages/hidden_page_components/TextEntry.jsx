@@ -3,7 +3,7 @@ import Card from 'react-bootstrap/Card'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Carousel from 'react-bootstrap/Carousel'
-
+import {AudioPlayer} from './AudioPlayer'
 export function TextEntry({textEntry}){
 
     const cardDisplay = {
@@ -33,6 +33,20 @@ export function TextEntry({textEntry}){
                     })}
                     
                 </Carousel>
+
+                <Card.Title>Audios</Card.Title>
+
+                {textEntry.audios.map( (audio) => {
+                    console.log("audio "+audio)
+                    return (
+                            
+                        <AudioPlayer fileName={audio[0]} audioFile={audio[1]} />
+                            
+                        )
+
+                })}
+
+
                    
             </Card.Body>
         </Card>

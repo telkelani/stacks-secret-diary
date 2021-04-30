@@ -6,8 +6,11 @@ const storage = new Storage({ userSession });
 
 let fileName = 'new_entries.json'
 
-export const saveEntriesToGaia = (entry) => {
-    storage.putFile(fileName, JSON.stringify({ entry })).then(result => {console.log(result)})
+export const saveEntriesToGaia = async (entry) => {
+    
+
+    storage.putFile(fileName, JSON.stringify({ entry }))
+    
     
   };
 

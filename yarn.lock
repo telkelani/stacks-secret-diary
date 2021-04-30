@@ -4334,7 +4334,7 @@ blockstack@^21.1.1:
     uuid "^3.3.3"
     zone-file "^1.0.0"
 
-bluebird@^3.5.5:
+bluebird@^3.5.5, bluebird@^3.7.2:
   version "3.7.2"
   resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-3.7.2.tgz#9f229c15be272454ffa973ace0dbee79a1b0c36f"
   integrity sha512-XpNj6GDQzdfW+r2Wnn7xiSAd7TM3jzkxGXBGTtWKuSXv1xUV+azxAm8jdWZN06QTQk+2N2XB9jRDkvbmQmcRtg==
@@ -13893,6 +13893,13 @@ react-app-polyfill@^1.0.1:
     regenerator-runtime "^0.13.3"
     whatwg-fetch "^3.0.0"
 
+react-audio-player@^0.17.0:
+  version "0.17.0"
+  resolved "https://registry.yarnpkg.com/react-audio-player/-/react-audio-player-0.17.0.tgz#4be7b1952512801f36ba0865a9c98f7b108f991e"
+  integrity sha512-aCZgusPxA9HK7rLZcTdhTbBH9l6do9vn3NorgoDZRxRxJlOy9uZWzPaKjd7QdcuP2vXpxGA/61JMnnOEY7NXeA==
+  dependencies:
+    prop-types "^15.7.2"
+
 react-bootstrap-datetimepicker@^0.0.22:
   version "0.0.22"
   resolved "https://registry.yarnpkg.com/react-bootstrap-datetimepicker/-/react-bootstrap-datetimepicker-0.0.22.tgz#07e448d993157d049ad0876d0f9a3c9c5029d9c5"
@@ -15488,6 +15495,13 @@ spdy@^4.0.0:
     http-deceiver "^1.2.7"
     select-hose "^2.0.0"
     spdy-transport "^3.0.0"
+
+split-file@^2.2.1:
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/split-file/-/split-file-2.2.1.tgz#ec3ccbe844e7d472f9992e033028d52257115e2a"
+  integrity sha512-rKVzxLOPIaAB222NGbPOHo/h9q+SZ3BseIqfLNBMpHw07l7P1V8bgSB2xC5JDDbvxUPvbZfCysj45nRvZXet8A==
+  dependencies:
+    bluebird "^3.7.2"
 
 split-on-first@^1.0.0:
   version "1.1.0"
