@@ -11,7 +11,7 @@ import {AddEntryModal} from './AddEntryModal'
 
 
 function getTimeStamp(){
-    const now = new Date().toISOString()
+    const now = new Date().toLocaleString("en-GB",{timeZone: 'Europe/London'})
     const date = now.split("T")[0]
     const time = now.substring(now.indexOf("T")+1,now.indexOf("."))
     return date+" "+time
@@ -121,11 +121,16 @@ export function TextEntries(){
                     audios: audios
                 }]
 
+
+               
                 saveEntry(newEntries)
+
                 
                 return newEntries
                 })
-                    
+
+                
+                
                 handleClose()
                 
             }
@@ -147,6 +152,7 @@ export function TextEntries(){
      const [endDate, setEndDate] = useState(null)
 
      const displayEntries = () => {
+        
         let entriestodisplay = entries.filter(function(entry){
             //Parse entry date (It isnt parsed properly in mobile)
             //Break down timestamp into its date and time parts

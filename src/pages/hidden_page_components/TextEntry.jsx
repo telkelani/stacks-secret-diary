@@ -37,7 +37,7 @@ export function TextEntry({textEntry}){
                 <Card.Title>Audios</Card.Title>
 
                 {textEntry.audios.map( (audio) => {
-                    console.log("audio "+audio)
+                    
                     return (
                             
                         <AudioPlayer fileName={audio[0]} audioFile={audio[1]} />
