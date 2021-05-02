@@ -11,7 +11,7 @@ import {AddEntryModal} from './AddEntryModal'
 import compress from 'compress-base64'
 import { countBy } from 'underscore';
 
-
+var bootbox = require('bootbox')
 
 function getTimeStamp(){
     const now = new Date().toLocaleString("en-GB",{timeZone: 'Europe/London'})
@@ -45,7 +45,16 @@ export function TextEntries(){
     /*useEffect renders this function when the DOM renders
     * The second  argument specifies that this should only when the page is loaded (mounted)*/
     useEffect( () => {
-        getEntries()    
+
+        bootbox.dialog({message:'Loading Entries'})
+        try{
+            getEntries().then(() => bootbox.hideAll())
+             
+        }
+
+        catch (e){
+
+        }
         
     },[])
 
@@ -59,15 +68,16 @@ export function TextEntries(){
     const getEntries = async () => {
         try{
             let fetchedEntries = await getEntriesFromGaia()
+
             let new_state = fetchedEntries.entry
-            console.log(new_state)
             setEntries(new_state)
         }
 
         catch (e) {
-            console.log(e.message)
-            console.log("caught")
+            bootbox.alert("No entries")
         }
+
+       
 
 
     }
@@ -121,13 +131,6 @@ export function TextEntries(){
         else{
             const confirmed = window.confirm("Are you sure you want to add entry? Remember, you cannot edit the entry once it is added")
             if (confirmed){
-                // let newEntry = {
-                //     id: uuid(),
-                //     date: getTimeStamp(),
-                //     text: text,
-                //     audioFiles: audioFiles
-                // }
-                // console.log(newEntry)
                 setEntries( prevEntries => {
                 let id = uuid()
                 let newEntries = [...prevEntries,
@@ -140,11 +143,6 @@ export function TextEntries(){
                 }]
                 
 
-                // let newEntries = [...prevEntries, newEntry]
-                
-
-
-                console.log(audios)
                 saveEntry(newEntries, audios)
                 
                 
@@ -161,10 +159,15 @@ export function TextEntries(){
         }
     }
     /* PUTTING AND RECEIVING DATA from GAIA */
-    console.log(entries)
+  
     const saveEntry = async (entry, audios) => {
         let response = await saveEntriesToGaia(entry, audios)
-        console.log(response)
+
+        let currentEntry = entry[entry.length-1]
+        for (let i = 0; i < audios.length; i++){
+            let fileResponse = await saveAudioToGaia(currentEntry.id,audios[i])
+        }
+        
     }
 
     /**
@@ -175,7 +178,16 @@ export function TextEntries(){
      const [startDate, setStartDate] = useState(null)
      const [endDate, setEndDate] = useState(null)
 
+     const NoEntries = () => {
+        var element = null
+        if (entries.length == 0){
+            element = <h3>No entries here!!! Pls Add a new one</h3>
+        }
+        return element
+     }
+
      const displayEntries = () => {
+
         
         let entriestodisplay = entries.filter(function(entry){
             //Parse entry date (It isnt parsed properly in mobile)
@@ -202,6 +214,7 @@ export function TextEntries(){
     
     
         })
+        
         
         return entriestodisplay
     
@@ -239,6 +252,7 @@ export function TextEntries(){
              /> 
             
             {/* Will display all entries in reverse order (most recent) */}
+            <NoEntries />
             {entriestodisplay.reverse().map( (textEntry) => <TextEntry 
                 key={textEntry.id} 
                 textEntry={textEntry}

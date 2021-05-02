@@ -1,6 +1,7 @@
 
 import { userSession } from './auth';
 import { Storage } from '@stacks/storage';
+import { faAllergies } from '@fortawesome/free-solid-svg-icons';
 const storage = new Storage({ userSession });
 
 
@@ -14,28 +15,19 @@ var bootbox = require('bootbox')
 export const saveEntriesToGaia = async (entry, audios) => {
     var response;
     let fileResponse;
+    var reqDialog = bootbox.dialog({message: 'Adding Entry... \n Please Do NOT refresh'})
     try {
     response = await storage.putFile(fileName, JSON.stringify({entry}))
+    reqDialog.modal('hide')
+    bootbox.dialog({message:'Entry added'})
+    }
 
-            let currentEntry = entry[entry.length-1]
-            let successfulUploads = 0;
-            
-            for (let i = 0; i < audios.length; i++){
-
-     
-                fileResponse = await saveAudioToGaia(currentEntry.id,audios[i])
-                successfulUploads++
-
-                
-                
-                }
-
-            console.log("successfulUploads "+successfulUploads)
-        }
+    
     
 
     catch(error){
         console.log(error)
+        reqDialog.modal('hide')
         alert("Entry saved but audio not saved. ")
         window.location.reload()
     }
@@ -50,7 +42,16 @@ export const saveEntriesToGaia = async (entry, audios) => {
 
 export async function saveAudioToGaia(entryId,audio){
 
+    var response;
+
+
     const fileName = entryId+"_"+audio[0]
+
+    var requestDialog = bootbox.dialog({
+        message: `Uploading ${audio[0]}. Please Wait. Do NOT refresh the page`
+    })
+
+
     const data = audio[1]
 
     const objectToStringify = {
@@ -58,9 +59,19 @@ export async function saveAudioToGaia(entryId,audio){
         fileName: audio[0],
         data: data
     }
-    
-    let response = await storage.putFile(fileName, JSON.stringify(objectToStringify))
+    try {
+        response = await storage.putFile(fileName, JSON.stringify(objectToStringify))
+        bootbox.dialog({
+            message:`Successfully uploaded ${audio[0]}`,
+            closeButton: true})
+        requestDialog.modal('hide')
 
+    }
+
+    catch (error){
+        console.log(error)
+        bootbox.alert("Upload failed")
+    }
     
 
     return response
@@ -77,8 +88,7 @@ export async function listFilesFromGaia(entry, audioFileName){
     }
     
     catch(error){
-        console.log(error)
-        alert(`File ${audioFileName} does not exist`)
+        // alert(`File ${audioFileName} does not exist`)
     }
 
     return promise
@@ -89,15 +99,17 @@ export async function getEntriesFromGaia(){
     try{
     const entriesJSON = await storage.getFile(fileName)
         if (entriesJSON){
-           
             const json_promise = JSON.parse(entriesJSON)
             return json_promise
         }
+        
     }
 
     catch( error ){
         //This is better because I am not adding an entry that says No entries, the json will just be the entries
-        alert("No Entries")
+        
+        console.log(error)
+        
     }
 
 }

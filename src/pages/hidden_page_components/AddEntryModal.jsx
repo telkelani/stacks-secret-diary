@@ -1,4 +1,4 @@
-import React, {useState, useRef} from 'react'
+import React, {useState, useRef, useEffect} from 'react'
 import {EntryContext} from '../../providers/EntryProvider'
 import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
@@ -11,12 +11,16 @@ import {AudioPlayer} from './AudioPlayer'
 import compress from 'compress-base64'
 
 
-// UI code for modal ( State is in parent )
-
+// UI code for modal ( State is in parent)
 
 export function AddEntryModal(props){
     const audioUploader = useRef(null)
     const [audioFiles, setAudioFiles] = useState([])
+
+    useEffect( () => {
+        setAudioFiles([])
+    }, [])
+    
 
     const previewAudio = (e) => 
     {
@@ -28,10 +32,11 @@ export function AddEntryModal(props){
             reader.readAsDataURL(file)
             reader.onload = (e) => {
                const fileContent = reader.result
-               console.log(file.size)
-               if (file.size > 10000000){
-                   alert("Pick a file that is less than 10MB")
+               if (file.size > 7000000){
+
+                   alert("Pick a file that is less than 7MB")
                    audioUploader.current.value = null
+                   setAudioFiles([])
                }
                else{
                    setAudioFiles(prev => [...prev,[file.name,fileContent]])
@@ -40,8 +45,9 @@ export function AddEntryModal(props){
         })
     }
 
-
+    
     return (
+        
         <div> 
             <Modal show={props.show} onHide={props.handleClose} animation={true}>
             <Modal.Header closeButton>
@@ -57,9 +63,10 @@ export function AddEntryModal(props){
 
             <Row>
                 <Col>
-                <p>Max file size:10MB</p>
+                <p>Max file size:6MB</p>
                 <input ref={audioUploader} 
                 type="file" multiple={true}  accept="audio/*" onChange={(e) => {
+                    
                     props.uploadAudio(e)
                     previewAudio(e)}} />
                 
