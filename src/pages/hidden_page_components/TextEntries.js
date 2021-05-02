@@ -4,9 +4,12 @@ import { EntryContext } from '../../providers/EntryProvider'
 
 import Button from 'react-bootstrap/Button'
 import { v4 as uuid } from 'uuid';
-import {saveEntriesToGaia, getEntriesFromGaia} from '../../storage'
+import {saveEntriesToGaia, getEntriesFromGaia, saveAudioToGaia, listFilesFromGaia} from '../../storage'
 import {Search} from './Search'
 import {AddEntryModal} from './AddEntryModal'
+
+import compress from 'compress-base64'
+import { countBy } from 'underscore';
 
 
 
@@ -28,6 +31,7 @@ export function TextEntries(){
     const [show, setShow] = useState(false);
     const [images,setImages] = useState([])
     const [audios, setAudios] = useState([])
+    const [audioFiles, setAudioFiles] = useState([])
     const handleClose = () => setShow(false);
     const handleShow = () => {
         setImages([]) //When add Entry button is pressed, images are reset
@@ -36,13 +40,16 @@ export function TextEntries(){
     /**
      * Entries state variables
      */
-    const [entries, setEntries] = useContext(EntryContext)
+    const [entries, setEntries] = useState([])
 
     /*useEffect renders this function when the DOM renders
     * The second  argument specifies that this should only when the page is loaded (mounted)*/
     useEffect( () => {
-        getEntries()      
+        getEntries()    
+        
     },[])
+
+    
 
 
     /**
@@ -53,6 +60,7 @@ export function TextEntries(){
         try{
             let fetchedEntries = await getEntriesFromGaia()
             let new_state = fetchedEntries.entry
+            console.log(new_state)
             setEntries(new_state)
         }
 
@@ -80,7 +88,7 @@ export function TextEntries(){
        
         }
     
-    const previewAudio = (e) => 
+    const uploadAudio = (e) => 
         {
             setAudios([])
             let fileArray = Array.from(e.target.files)
@@ -89,9 +97,12 @@ export function TextEntries(){
                 const reader = new FileReader()
                 reader.readAsDataURL(file)
                 reader.onload = () => {
+                
                    const fileContent = reader.result
-                   console.log("file "+fileContent)
+                   
+                   
                    setAudios(prev => [...prev,[file.name,fileContent]])
+                   setAudioFiles(prev => [...prev, file.name])
                 }
             })
         }
@@ -99,48 +110,61 @@ export function TextEntries(){
  
 
         
-    console.log(audios)
-    const addEntry =  (value) => {
-        if (value === ''){
+    const addEntry =  (text) => {
+        if (text === ''){
             return
         }
-        if (value.trim() == ''){
+        if (text.trim() == ''){
             
             alert("Please enter some text")
         }
         else{
             const confirmed = window.confirm("Are you sure you want to add entry? Remember, you cannot edit the entry once it is added")
             if (confirmed){
-                setEntries(prevState => {
-                let newEntries = [...prevState,
+                // let newEntry = {
+                //     id: uuid(),
+                //     date: getTimeStamp(),
+                //     text: text,
+                //     audioFiles: audioFiles
+                // }
+                // console.log(newEntry)
+                setEntries( prevEntries => {
+                let id = uuid()
+                let newEntries = [...prevEntries,
                         {
-                    id:uuid(),
+                    id:id,
                     date:getTimeStamp(),
-                    text:value,
+                    text:text,
                     images: images,
-                    audios: audios
+                    audios: audioFiles
                 }]
-
-
-               
-                saveEntry(newEntries)
-
                 
+
+                // let newEntries = [...prevEntries, newEntry]
+                
+
+
+                console.log(audios)
+                saveEntry(newEntries, audios)
+                
+                
+                // listFilesFromGaia()
                 return newEntries
                 })
 
-                
-                
+    
                 handleClose()
-                
+            
             }
+
             
         }
     }
     /* PUTTING AND RECEIVING DATA from GAIA */
-
-    const saveEntry = (entry) => {
-        saveEntriesToGaia(entry)
+    console.log(entries)
+    const saveEntry = async (entry, audios) => {
+        let response = await saveEntriesToGaia(entry, audios)
+        console.log(response)
     }
 
     /**
@@ -211,7 +235,7 @@ export function TextEntries(){
             handleClose={handleClose} 
             addEntry={addEntry}
             imageUpload={imageUpload}
-            previewAudio={previewAudio}
+            uploadAudio={uploadAudio}
              /> 
             
             {/* Will display all entries in reverse order (most recent) */}

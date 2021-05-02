@@ -1,17 +1,54 @@
-import React, {useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 import Card from 'react-bootstrap/Card'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Carousel from 'react-bootstrap/Carousel'
 import {AudioPlayer} from './AudioPlayer'
-export function TextEntry({textEntry}){
+import { listFilesFromGaia } from '../../storage'
+import { getGlobalScope } from 'blockstack/lib/utils'
+import { createPortal } from 'react-dom'
 
-    const cardDisplay = {
-        background: 'red'
+
+export function TextEntry({textEntry}){
+    const [audioFiles, setAudioFiles] = useState([])
+    const [loadAudio, setLoadAudio] = useState(false)
+    useEffect (() => {
+        setLoadAudio(false)
+    }, [])
+    useEffect( () => {
+        if (loadAudio) {
+
+            getAudioFiles()
+        }
+    }, [loadAudio])
+    async function  getAudioFiles(){
+
+        const files = textEntry.audios
+        const filesFromServer = []
+        for (var i=0; i<files.length;i++){
+            const fileFromServer = await listFilesFromGaia(textEntry, files[i])
+            filesFromServer.push(fileFromServer)
+        }
+
+        setAudioFiles(filesFromServer)
+
+        
+
         
     }
+    
+    const AudioBody = ({file}) => {
+        var elem = null
+        if (file) {
+            if (loadAudio){
+                elem = <AudioPlayer fileName={file.fileName} audioFile={file.data} />
+            }
+        }
 
+        return elem
+    }
 
+    
     return (
         <Card style={{background: '#40eddc', marginTop: '2vh', marginBottom: '2vh'}}>
             <Card.Body >
@@ -35,16 +72,11 @@ export function TextEntry({textEntry}){
                 </Carousel>
 
                 <Card.Title>Audios</Card.Title>
+                
+                <button onClick={(e) => setLoadAudio(true)}>Load Audio</button>
+                
 
-                {textEntry.audios.map( (audio) => {
-                    
-                    return (
-                            
-                        <AudioPlayer fileName={audio[0]} audioFile={audio[1]} />
-                            
-                        )
-
-                })}
+                {audioFiles.map(file => <AudioBody file={file}/>)}
 
 
                    

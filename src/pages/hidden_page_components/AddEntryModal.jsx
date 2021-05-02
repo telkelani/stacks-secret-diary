@@ -8,7 +8,7 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 
 import {AudioPlayer} from './AudioPlayer'
-
+import compress from 'compress-base64'
 
 
 // UI code for modal ( State is in parent )
@@ -17,6 +17,29 @@ import {AudioPlayer} from './AudioPlayer'
 export function AddEntryModal(props){
     const audioUploader = useRef(null)
     const [audioFiles, setAudioFiles] = useState([])
+
+    const previewAudio = (e) => 
+    {
+        setAudioFiles([])
+        let fileArray = Array.from(e.target.files)
+
+        fileArray.forEach( file => {
+            const reader = new FileReader()
+            reader.readAsDataURL(file)
+            reader.onload = (e) => {
+               const fileContent = reader.result
+               console.log(file.size)
+               if (file.size > 10000000){
+                   alert("Pick a file that is less than 10MB")
+                   audioUploader.current.value = null
+               }
+               else{
+                   setAudioFiles(prev => [...prev,[file.name,fileContent]])
+               }
+            }
+        })
+    }
+
 
     return (
         <div> 
@@ -34,8 +57,11 @@ export function AddEntryModal(props){
 
             <Row>
                 <Col>
+                <p>Max file size:10MB</p>
                 <input ref={audioUploader} 
-                type="file" multiple={true}  accept="audio/*" onChange={(e) => props.previewAudio(e)}/>
+                type="file" multiple={true}  accept="audio/*" onChange={(e) => {
+                    props.uploadAudio(e)
+                    previewAudio(e)}} />
                 
                 {audioFiles.map(file => 
                 
@@ -59,7 +85,12 @@ export function AddEntryModal(props){
 
 
 
-            <Button variant="secondary" onClick={props.handleClose}>
+            <Button variant="secondary" onClick={() =>
+                {
+                setAudioFiles([]);
+                props.handleClose();
+                }
+                }>
                 Close
             </Button>
             
