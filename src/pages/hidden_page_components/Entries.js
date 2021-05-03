@@ -1,15 +1,12 @@
-import React, {useContext, useEffect, useState} from 'react'
-import {TextEntry} from './TextEntry'
-import { EntryContext } from '../../providers/EntryProvider'
+import React, {useEffect, useState} from 'react'
+import {Entry} from './Entry'
 
 import Button from 'react-bootstrap/Button'
 import { v4 as uuid } from 'uuid';
-import {saveEntriesToGaia, getEntriesFromGaia, saveAudioToGaia, listFilesFromGaia} from '../../storage'
+import {saveEntriesToGaia, getEntriesFromGaia, saveAudioToGaia} from '../../storage'
 import {Search} from './Search'
 import {AddEntryModal} from './AddEntryModal'
 
-import compress from 'compress-base64'
-import { countBy } from 'underscore';
 
 var bootbox = require('bootbox')
 
@@ -23,15 +20,12 @@ function getTimeStamp(){
 
 
 
-export function TextEntries(){
+export function Entries(){
  
     /**
      * Modal State variables
      */
     const [show, setShow] = useState(false);
-    const [images,setImages] = useState([])
-    const [audios, setAudios] = useState([])
-    const [audioFiles, setAudioFiles] = useState([])
     const handleClose = () => setShow(false);
     const handleShow = () => {
         setImages([]) //When add Entry button is pressed, images are reset
@@ -41,19 +35,22 @@ export function TextEntries(){
      * Entries state variables
      */
     const [entries, setEntries] = useState([])
+    const [images,setImages] = useState([])
+    const [audios, setAudios] = useState([])
+    const [audioFiles, setAudioFiles] = useState([])
 
     /*useEffect renders this function when the DOM renders
     * The second  argument specifies that this should only when the page is loaded (mounted)*/
     useEffect( () => {
 
-        bootbox.dialog({message:'Loading Entries'})
+        bootbox.dialog({message:'<span><i class="fa fa-spin fa-spinner"></i> Loading Entries</span>'})
         try{
             getEntries().then(() => bootbox.hideAll())
              
         }
 
-        catch (e){
-
+        catch (error){
+            console.log(error)
         }
         
     },[])
@@ -223,7 +220,6 @@ export function TextEntries(){
 
     //This returns the entries based on search (If nothing is searched will just return all entries)
     let entriestodisplay = displayEntries() 
-    console.log(TextEntries)
     return (
         
         <div>
@@ -253,9 +249,9 @@ export function TextEntries(){
             
             {/* Will display all entries in reverse order (most recent) */}
             <NoEntries />
-            {entriestodisplay.reverse().map( (textEntry) => <TextEntry 
-                key={textEntry.id} 
-                textEntry={textEntry}
+            {entriestodisplay.reverse().map( (entry) => <Entry 
+                key={entry.id} 
+                entry={entry}
                 />)
             }
 

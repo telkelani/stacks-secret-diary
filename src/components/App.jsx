@@ -6,7 +6,7 @@ import { userSession } from '../auth';
 import { Route, BrowserRouter, Switch} from 'react-router-dom'
 import {MemoryRouter} from 'react-router'
 import { createBrowserHistory} from 'history'
-import {EntryProvider} from '../providers/EntryProvider'
+
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "react-datepicker/dist/react-datepicker.css";
@@ -38,8 +38,6 @@ export default class App extends Component {
     return (
       //Put the provider in the app so that ALL components have access to Entry state
 
-        <EntryProvider>
-
 
         <BrowserRouter>
        
@@ -56,7 +54,6 @@ export default class App extends Component {
           
         </BrowserRouter>
 
-        </EntryProvider>
   
 
       

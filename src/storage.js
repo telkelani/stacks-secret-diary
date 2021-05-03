@@ -1,7 +1,7 @@
 
 import { userSession } from './auth';
 import { Storage } from '@stacks/storage';
-import { faAllergies } from '@fortawesome/free-solid-svg-icons';
+import $ from 'jquery'
 const storage = new Storage({ userSession });
 
 
@@ -15,7 +15,7 @@ var bootbox = require('bootbox')
 export const saveEntriesToGaia = async (entry, audios) => {
     var response;
     let fileResponse;
-    var reqDialog = bootbox.dialog({message: 'Adding Entry... \n Please Do NOT refresh'})
+    var reqDialog = bootbox.dialog({message: '<span><i class="fa fa-spin fa-spinner"></i> Adding Entry... \n Please Do NOT refresh</span>'})
     try {
     response = await storage.putFile(fileName, JSON.stringify({entry}))
     reqDialog.modal('hide')
@@ -29,6 +29,8 @@ export const saveEntriesToGaia = async (entry, audios) => {
         console.log(error)
         reqDialog.modal('hide')
         alert("Entry saved but audio not saved. ")
+
+        //Refresh the page so that the entry is removed 
         window.location.reload()
     }
 
@@ -48,7 +50,7 @@ export async function saveAudioToGaia(entryId,audio){
     const fileName = entryId+"_"+audio[0]
 
     var requestDialog = bootbox.dialog({
-        message: `Uploading ${audio[0]}. Please Wait. Do NOT refresh the page`
+        message: `<span><i class="fa fa-spin fa-spinner"></i> Uploading ${audio[0]}. Please Wait. Do NOT refresh the page</span>`
     })
 
 
@@ -62,9 +64,10 @@ export async function saveAudioToGaia(entryId,audio){
     try {
         response = await storage.putFile(fileName, JSON.stringify(objectToStringify))
         bootbox.dialog({
-            message:`Successfully uploaded ${audio[0]}`,
+            message:`<span><i class="fas fa-check-circle"></i> Successfully uploaded ${audio[0]}</span>`,
             closeButton: true})
         requestDialog.modal('hide')
+        
 
     }
 

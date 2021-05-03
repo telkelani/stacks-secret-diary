@@ -11,7 +11,7 @@ import { createPortal } from 'react-dom'
 import $ from 'jquery'
 import { dialog } from 'bootbox'
 
-export function TextEntry({textEntry}){
+export function Entry({entry}){
 
     var jquery = require('jquery')
     var bootstrap = require('bootstrap')
@@ -32,33 +32,39 @@ export function TextEntry({textEntry}){
 
     async function  getAudioFiles(){
 
-        const files = textEntry.audios
+        const files = entry.audios
         const filesFromServer = []
         var loadingAudio = bootbox.dialog({
-            message: `Loading Audios... (loaded 0 of ${files.length}) files`,
+            message: `<span><i class="fa fa-spin fa-spinner"></i> Loading Audios... (loaded 0 of ${files.length}) files</span>`,
             closeButton: false
         })
 
 
         for (var i=0; i<files.length;i++){
    
-            const fileFromServer = await listFilesFromGaia(textEntry, files[i])
+            const fileFromServer = await listFilesFromGaia(entry, files[i])
             if (fileFromServer){
 
                 var loadedFile = bootbox.dialog({
-                    message: `${files[i]} loaded: \n\n(${i+1} of ${files.length} files)`
+                    message: `<i class="fas fa-check-circle"></i> ${files[i]} loaded: \n\n(${i+1} of ${files.length} files)`
                 })
                 filesFromServer.push(fileFromServer)
+
             }
             else{
+  
                 bootbox.dialog({
                     message: `${files[i]} Does not exist`
                 })
+                
+                
             }
 
         }
-
+        $('.bootbox.modal.fade.show').removeClass('show')
         loadingAudio.modal('hide')
+        
+        
         
 
      
@@ -89,7 +95,7 @@ export function TextEntry({textEntry}){
 
     const NoAudioFiles = () => {
         var elem = <p>No audio uploaded</p>
-        if (textEntry.audios.length > 0){
+        if (entry.audios.length > 0){
             elem = null
         }
         return elem
@@ -99,14 +105,14 @@ export function TextEntry({textEntry}){
     return (
         <Card style={{background: '#40eddc', marginTop: '2vh', marginBottom: '2vh'}}>
             <Card.Body >
-                <Card.Title>{textEntry.date}</Card.Title>
+                <Card.Title>{entry.date}</Card.Title>
                     <Card.Text style={{textAlign: "left"}}>
-                        {textEntry.text}
+                        {entry.text}
                     </Card.Text>
                 <Card.Title>Images</Card.Title>
                 
                 <Carousel>
-                    {textEntry.images.map( (image) => {
+                    {entry.images.map( (image) => {
             
                         return (
                             <Carousel.Item>

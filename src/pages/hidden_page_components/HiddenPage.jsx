@@ -4,7 +4,7 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import {Header} from './Header'
 import { Link } from 'react-router-dom'
-import {TextEntries} from './TextEntries'
+import {Entries} from './Entries'
 import { UsefulLinks } from './UsefulLinks'
 
 export function HiddenPage(){
@@ -26,7 +26,7 @@ export function HiddenPage(){
         <Container fluid>
           <Row>
             <Col md={9} className="text-center">
-              <TextEntries />
+              <Entries />
             </Col>
             <Col md={3}>
               <UsefulLinks />

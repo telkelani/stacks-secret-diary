@@ -1,5 +1,4 @@
 import React, {useState, useRef, useEffect} from 'react'
-import {EntryContext} from '../../providers/EntryProvider'
 import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
 import ImageUploader from 'react-images-upload';

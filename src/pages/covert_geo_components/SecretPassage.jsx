@@ -1,5 +1,6 @@
 import React from 'react'
 import ocean from '../../ocean.jpg'
+import light_ocean from '../../light-ocean.jpg'
 import $ from 'jquery'
 import eraser from '../../jQuery.eraser-master/jquery.eraser.js'
 import {secret_path} from '../../components/App'
@@ -15,6 +16,8 @@ import {MemoryRouter as Router} from 'react-router'
 
 export function redirect(){
     
+    //Use window.location.replace() so history is not recorded. 
+    //Cannot press back to go back and forward (another measure against finding the secret page)
     window.location.replace(secret_path)
     // console.log('uwu')
     // return <h1>Hewwo</h1>
@@ -41,7 +44,7 @@ export function SecretPassage(){
     })
     return (
         <div>
-           <img src={ocean} id="ocean" width="100vh"></img>
+           <img src={light_ocean} id="ocean" width="100vh"></img>
         </div>
             )
 }
