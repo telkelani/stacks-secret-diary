@@ -75,7 +75,7 @@ export function AddEntryModal(props){
 
                         <Form>
                         <Form.File ref={audioUploader}
-                          
+                        multiple={true}
                         accept=".ogg,.wav,.m4a,.mp3" 
                         onChange={(e) => {props.uploadAudio(e); previewAudio(e)}}>
 

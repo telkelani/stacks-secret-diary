@@ -187,7 +187,7 @@ export function Entries(){
      const NoEntries = () => {
         var element = null
         if (entries.length == 0){
-            element = <h3>No entries here!!! Pls Add a new one</h3>
+            element = <h3>No entries here. Click Add Entry to add a new entry</h3>
         }
         return element
      }
