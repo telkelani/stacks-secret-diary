@@ -1,0 +1,56 @@
+.search{
+    margin-bottom: 5vh;
+    padding: 5%;
+    border-radius: 50px 50px 50px 50px;
+    border-color: rgb(24, 172, 147);
+    border-style: solid;
+    box-shadow: 5px 5px 5px 5px rgba(0,0,0,0.5)
+}
+
+#search-collapse-content{
+    margin-top: 5vh;
+
+}
+
+.text-search{
+    padding: 5%;
+}
+
+.date-search{
+    padding-top: 5%;
+}
+
+#entry{
+    background: linear-gradient(to left,#67d1b5,#52a3cc);
+    margin-top: 2vh;
+    margin-bottom: 2vh;
+}
+
+
+.date-search-input{
+    border-radius: 5px 5px 5px 5px;
+    border-color: transparent;
+}
+
+.search-button{
+    opacity: 80%;
+    background: #5663d3 !important;
+   
+}
+
+.attachments-container{
+    background: #a0ad97 !important;
+    margin-top: 5vh;
+    border-radius: 23px 23px 23px 23px;
+    padding: 5%;
+}
+
+#globe:hover{
+    color: black
+
+}
+
+#globe{
+    color: #52a3cc
+}
+

@@ -99,12 +99,18 @@ export async function listFilesFromGaia(entry, audioFileName){
 
 
 export async function getEntriesFromGaia(){
+
+
     try{
+        
     const entriesJSON = await storage.getFile(fileName)
         if (entriesJSON){
+            
             const json_promise = JSON.parse(entriesJSON)
+
             return json_promise
         }
+
         
     }
 

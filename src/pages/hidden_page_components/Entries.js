@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useState, useRef} from 'react'
 import {Entry} from './Entry'
 
 import Button from 'react-bootstrap/Button'
@@ -6,14 +6,22 @@ import { v4 as uuid } from 'uuid';
 import {saveEntriesToGaia, getEntriesFromGaia, saveAudioToGaia} from '../../storage'
 import {Search} from './Search'
 import {AddEntryModal} from './AddEntryModal'
+import Collapse from 'react-bootstrap/Collapse'
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
 
+import './Entries.css'
+
+import ScrollAnimation from 'react-animate-on-scroll'
 
 var bootbox = require('bootbox')
 
 function getTimeStamp(){
     const now = new Date().toLocaleString("en-GB",{timeZone: 'Europe/London'})
-    const date = now.split("T")[0]
-    const time = now.substring(now.indexOf("T")+1,now.indexOf("."))
+
+    const date = now.split(", ")[0]
+    const time = now.split(", ")[1]
+
     return date+" "+time
 }   
 
@@ -119,11 +127,12 @@ export function Entries(){
         
     const addEntry =  (text) => {
         if (text === ''){
-            return
-        }
-        if (text.trim() == ''){
-            
             alert("Please enter some text")
+            
+        }
+        else if (text.trim() == ''){
+            alert("Please enter some text")
+            
         }
         else{
             const confirmed = window.confirm("Are you sure you want to add entry? Remember, you cannot edit the entry once it is added")
@@ -190,11 +199,12 @@ export function Entries(){
             //Parse entry date (It isnt parsed properly in mobile)
             //Break down timestamp into its date and time parts
             let splitted_datetime = entry.date.split(" ")
-            let splitted_date = splitted_datetime[0].split("-") 
+            let splitted_date = splitted_datetime[0].split("/") 
             let splitted_time = splitted_datetime[1].split(":")
+
     
-    
-            let entry_date = new Date(splitted_date[0],splitted_date[1]-1,splitted_date[2],splitted_time[0]
+            
+            let entry_date = new Date(splitted_date[2],splitted_date[1]-1,splitted_date[0],splitted_time[0]
                 ,splitted_time[1],splitted_time[2]) 
                 //Parsing date using new Date(string) was problematic for mobile
                 //Had to break down the date into separate parts and create a new date object where the year, month, day, etc 
@@ -220,40 +230,73 @@ export function Entries(){
 
     //This returns the entries based on search (If nothing is searched will just return all entries)
     let entriestodisplay = displayEntries() 
+
+    const [openSearch, setOpenSearch] = useState(false)
+    const searchButton = useRef(null)
+
     return (
         
         <div>
 
             {/* Title */}
-            <h1>Journal Entries ✍</h1>
+    
+            <h1>Journal <i class="fas fa-book-reader" style={{color: '#52a3cc'}}></i>  Entries </h1>
 
-            {/* Search component */}
-            <Search
-            query={query}
-            setQuery={setQuery}
-            startDate={startDate}
-            setStartDate={setStartDate}
-            endDate={endDate}
-            setEndDate={setEndDate}
-             />
+            <Row>
 
-            {/* Add Entry at the top of entries, as it have to scroll down to see add entry */}
-            <Button variant="success" onClick={handleShow}>Add Entry</Button>
-            <AddEntryModal 
-            show={show} 
-            handleClose={handleClose} 
-            addEntry={addEntry}
-            imageUpload={imageUpload}
-            uploadAudio={uploadAudio}
-             /> 
+            <Col className="text-left">
+      
+            <Button className="search-button" ref={searchButton} onClick={()=> setOpenSearch(!openSearch)} 
+            aria-controls="search-collapse-content"
+            aria-expanded={openSearch}
+            >
+                Search Entries <i class="fas fa-search"></i>
+            </Button>
+
+            </Col>
+
+
+
+            <Col className="text-right">
+            
+                {/* Add Entry at the top of entries, as it have to scroll down to see add entry */}
+                <Button variant="success" onClick={handleShow}>Add Entry</Button>
+                <AddEntryModal 
+                show={show} 
+                handleClose={handleClose} 
+                addEntry={addEntry}
+                imageUpload={imageUpload}
+                uploadAudio={uploadAudio}
+                /> 
+            </Col>
+
+            </Row>
+
+            
+            <Collapse in={openSearch} 
+            onEnter={() => searchButton.current.innerHTML = "Hide Search"} 
+            onExit={() => searchButton.current.innerHTML = "Search Entries <i class='fas fa-search'></i>"}>
+                <div id="search-collapse-content">
+                    <Search
+                        query={query}
+                        setQuery={setQuery}
+                        startDate={startDate}
+                        setStartDate={setStartDate}
+                        endDate={endDate}
+                        setEndDate={setEndDate}
+                    />
+
+                </div>
+            </Collapse>
             
             {/* Will display all entries in reverse order (most recent) */}
             <NoEntries />
-            {entriestodisplay.reverse().map( (entry) => <Entry 
-                key={entry.id} 
-                entry={entry}
-                />)
-            }
+                {entriestodisplay.reverse().map( (entry) => <Entry 
+                    key={entry.id} 
+                    entry={entry}
+                    />)
+                }
+
 
         
         </div>

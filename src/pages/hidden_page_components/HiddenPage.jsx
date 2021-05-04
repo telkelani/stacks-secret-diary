@@ -7,26 +7,32 @@ import { Link } from 'react-router-dom'
 import {Entries} from './Entries'
 import { UsefulLinks } from './UsefulLinks'
 
+import ScrollAnimation from 'react-animate-on-scroll'
+
 export function HiddenPage(){
 
-  const nopadding = {
+  const HiddenPageStyle = {
     paddingLeft: 0,
     paddingRight: 0,
     minHeight: '100vh',
-    background: 'linear-gradient(to bottom, #8efa97 30% , #8cdead)'
+    background: 'linear-gradient(to right, #a3d6b2 50% , #8cdead)'
   }
   
 
 
   
   return (
-      <Container fluid fill="100%" style={nopadding}>
+      <Container fluid fill="100%" style={HiddenPageStyle}>
         
         <Header />
         <Container fluid>
           <Row>
             <Col md={9} className="text-center">
-              <Entries />
+              <ScrollAnimation animateIn="fadeInDown" duration={2.5}>
+                <Entries />
+
+              </ScrollAnimation>
+              
             </Col>
             <Col md={3}>
               <UsefulLinks />

@@ -7,65 +7,90 @@ import Button from 'react-bootstrap/Button'
 
 
 // Contains UI of Search functions (Separate component to not clutter TextEntries.js)
+import './Entries.css'
 
-const searchStyles= {
-    marginBottom: '5vh',
-    paddingLeft:'5%',paddingRight: '5%',paddingBottom:'2vh', boxShadow: '5px 5px 5px 5px black'}
 
 export function Search(props){
     return (
         <div>
-        {/* Preventdefault on submit to stop enter key from refreshing page */}
-        <Form style={searchStyles} onSubmit={(e) => e.preventDefault()}>
-        <Form.Group>
-            <Form.Label>Search entry text</Form.Label>
-            <Form.Control defaultValue={props.query} onChange={(e) => 
-            {
+
+        <Row>
+
+        <Col>
+       
+            {/* Preventdefault on submit to stop enter key from refreshing page */}
+            <Form className="search" onSubmit={(e) => e.preventDefault()}>
+
+            <Form.Group className="text-search">
+                <Form.Label>Search by text</Form.Label>
+                <Form.Label>Search results come up automatically while typing</Form.Label>
+                <Form.Control style={{height: '20vh' }} placeholder="Search by text" 
+                defaultValue={props.query} onChange={(e) => 
+                {
+                    
+                    props.setQuery(e.target.value)
+                }
+                    } as="textarea"></Form.Control>
+
+            </Form.Group>
+            </Form>
+        </Col>
+    <Col>
+
+    <Row className="search">
+        
+        <Col  xs={12} md={12}> 
+                <p className="date-search">Search by Date and Time</p>
                 
-                props.setQuery(e.target.value)
-            }
-                } type="text"></Form.Control>
-            
-            {/* Button that doesn't do anything. The search is already
-                completed by the onChange event. */}
-            <Button>Search</Button>
-        </Form.Group>
-    </Form>
-
-    <Row style={{marginBottom: '5vh'}}>
-        <Col xs={12} md={3}> 
-            <p>Search by Date and Time</p>
-        </Col>
-        <Col xs={11} md={4}>
-            From:
-            <DatePicker timeFormat="HH:mm:ss" dateFormat="yyyy-MM-dd HH:mm:ss" 
-            showTimeInput 
-            isClearable 
-            selected={props.startDate} onChange={(e) => props.setStartDate(e)} 
-            startDate={props.startDate} endDate={props.endDate}  > </DatePicker>
-
+                <p>Search results will come up automatically when both dates are specified</p>
         </Col>
 
-        <Col xs={11} md={4}>
-        To:
-            <DatePicker timeFormat="HH:mm:ss" dateFormat="yyyy-MM-dd HH:mm:ss"  
-            showTimeInput 
-            isClearable  
-            selected={props.endDate} 
-            onChange={(e)=>props.setEndDate(e)} 
-            endDate={props.endDate} 
-            minDate={props.startDate} > </DatePicker>
+        
+        <Col>
+
+           
+                <Col>
+                    <Col>
+                        From:
+                    </Col>
+                   
+                   <Col>
+                    <DatePicker className="date-search-input" timeFormat="HH:mm:ss" dateFormat="yyyy-MM-dd HH:mm:ss" 
+                        showTimeInput 
+                        isClearable 
+                        selected={props.startDate} onChange={(e) => props.setStartDate(e)} 
+                        startDate={props.startDate} endDate={props.endDate}  > </DatePicker>
+                   </Col>
+
+
+                </Col>
+
+            <Col>
+                    <Col>
+                        To:
+                    </Col>
+                <Col>
+                    <DatePicker className="date-search-input" timeFormat="HH:mm:ss" dateFormat="yyyy-MM-dd HH:mm:ss"  
+                    showTimeInput 
+                    isClearable  
+                    selected={props.endDate} 
+                    onChange={(e)=>props.setEndDate(e)} 
+                    endDate={props.endDate} 
+                    minDate={props.startDate} > </DatePicker>
+                
+                </Col>
+ 
+            </Col>
+
+         
+
         </Col>
 
-        {/* This is a search button that does not do anything 
-            This is because the search is carried out by onChange already 
-            doesn't make a difference 
-            The search button was added as survey respondents asked for it
-            although it technically isnt needed 
-            */}
-        <Col className="text-right">
-                <Button>Search By Date</Button>
-        </Col>
+        
+    </Row>
+
+    </Col>
+
     </Row>
         </div>
     )

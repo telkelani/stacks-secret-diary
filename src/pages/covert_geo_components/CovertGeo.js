@@ -8,8 +8,10 @@ import Container from 'react-bootstrap/Container'
 import axios from 'axios'
 import _ from 'underscore'
 
-import waterBackground from '../../waterBackground.gif'
-import sand from '../../sand.jpg'
+import waterBackground from './waterBackground.gif'
+
+
+import './CovertGeo.css'
 
 
 export var secret_path = "/"+process.env.REACT_APP_SECRET_ROUTE;
@@ -37,7 +39,6 @@ export function CovertGeo() {
    *  questionNumber: to stop at a certain number of questions
    *  gameOver: to change the component shown when game is over
    */
-
   const [question, setQuestion] = useState({}) 
   const [answers, setAnswers] = useState([])
   const [score,setScore] = useState(0)
@@ -109,8 +110,10 @@ export function CovertGeo() {
    */
   function handleClick(e) {
     var clicked = e.target.textContent
+    
     if (clicked === question.capital){
       setScore(score+1)
+
     }
     if (questionNumber === 10){
       setGameOver(true)
@@ -124,50 +127,27 @@ export function CovertGeo() {
    * 
    * @returns Game Component
    */
-  const cardStyle = {
-    background: 'rgba(194, 178, 128,0.7)',
-    width: '18rem',
-    margin: '15vh auto',
-    boxShadow: '5px 0px 5px 0px rgb(167, 222, 218)'
-  
-  }
 
   const Game = () => {
-    const buttonStyle ={
-      margin: '10px 2px',
-      background: '#52a3cc',
-      border: 'none'
-    }
 
 
-
-    
-    const gameInfoStyles ={
-      background: 'rgba(194, 178, 128,0.7)',
-      width: '18em',
-      position: 'relative',
-      top: '50%',
-      left: '50%',
-      transform: 'translate(-50%, 20%)',
-      padding: '10px'
-    }
     return (
     <div>
-    <div style={gameInfoStyles}>
+    <div className="game-info">
       <h3>Question Number: {questionNumber}</h3>
-      <h4>Your Score: {score}</h4>
+      <h4>Your Score: {score}/10</h4>
 
     </div>
 
     
-    <Card style={cardStyle}>
+    <Card className="middle-card" >
       <Card.Body >
         <Card.Title>
           
           What is the capital of {question.name}?
           
         </Card.Title>
-        {answers.map(answer => <Button onClick={handleClick}  style={buttonStyle}>{answer.capital}</Button>)}            
+        {answers.map(answer => <Button onClick={(e) => handleClick(e)}  className="quiz-button">{answer.capital}</Button>)}            
       </Card.Body>
 
     </Card>
@@ -194,14 +174,14 @@ export function CovertGeo() {
    */
   const PlayAgain = () => {
     return (
-      <Card style={cardStyle}>
+      <Card className="middle-card">
       <Card.Body >
         <Card.Title>
           
         <h1>Your final score is: {score}</h1>
           
         </Card.Title>
-        <Button style={{background: '#52a3cc'}}onClick={reset}>Play Again</Button>         
+        <Button className="quiz-button" onClick={reset}>Play Again</Button>         
       </Card.Body>
 
     </Card>
@@ -214,12 +194,14 @@ export function CovertGeo() {
    * If gameOVer is true, then the PlayAgain component will be rendered, if not then the Game component
    */
   const containerStyle={
-    background: `url(${waterBackground}) no-repeat center center fixed`,
+    background: `url(${waterBackground}) no-repeat center`,
     backgroundSize: 'cover',
 
     width: '100%',
     height: '100vh',
     overflow: 'hidden'
+
+    
     
   }
 

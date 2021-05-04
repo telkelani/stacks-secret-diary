@@ -8,6 +8,7 @@ import Col from 'react-bootstrap/Col'
 
 import {AudioPlayer} from './AudioPlayer'
 import compress from 'compress-base64'
+import { Form } from 'react-bootstrap';
 
 
 // UI code for modal ( State is in parent)
@@ -53,26 +54,41 @@ export function AddEntryModal(props){
             <Modal.Title>Add Entry</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <textarea id="new entry" style={{height: "50vh", width: "100%"}}></textarea>
+                <Form>
+                    <Form.Group>
+                        <Form.Control placeholder="Enter text here" as="textarea" id="new entry"></Form.Control>
+                    </Form.Group>
+                </Form>
             </Modal.Body>
-            <Modal.Footer>
 
 
             
 
             <Row>
                 <Col>
-                <p>Max file size:6MB</p>
-                <input ref={audioUploader} 
-                type="file" multiple={true}  accept="audio/*" onChange={(e) => {
+            
+           
+                    <Col className="text-left">
+                        <h3>Upload Audio</h3>
+                        <p>Max File Size: 6MB</p>
+                        <p>Extensions accepted: .ogg|.wav|.m4a|.mp3</p>
+
+                        <Form>
+                        <Form.File ref={audioUploader}
+                          
+                        accept=".ogg,.wav,.m4a,.mp3" 
+                        onChange={(e) => {props.uploadAudio(e); previewAudio(e)}}>
+
+                        </Form.File>
+
+                </Form>
+
+                
+                    {audioFiles.map(file => 
                     
-                    props.uploadAudio(e)
-                    previewAudio(e)}} />
-                
-                {audioFiles.map(file => 
-                
-                <AudioPlayer fileName={file[0]} audioFile={file[1]} />)}
-                
+                    <AudioPlayer fileName={file[0]} audioFile={file[1]} />)}
+                </Col>
+        
 
                 </Col>
 
@@ -90,7 +106,7 @@ export function AddEntryModal(props){
             </Row>
 
 
-
+            <Modal.Footer>
             <Button variant="secondary" onClick={() =>
                 {
                 setAudioFiles([]);
@@ -100,7 +116,7 @@ export function AddEntryModal(props){
                 Close
             </Button>
             
-            <Button variant="primary" onClick={() => props.addEntry(document.getElementById("new entry").value)}>
+            <Button variant="success" onClick={() => props.addEntry(document.getElementById("new entry").value)}>
                 Add Entry
             </Button>
 

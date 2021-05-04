@@ -4,12 +4,15 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button'
 import Carousel from 'react-bootstrap/Carousel'
+import Container from 'react-bootstrap/Container'
 import {AudioPlayer} from './AudioPlayer'
 import { listFilesFromGaia } from '../../storage'
 import { getGlobalScope } from 'blockstack/lib/utils'
 import { createPortal } from 'react-dom'
 import $ from 'jquery'
 import { dialog } from 'bootbox'
+
+import './Entries.css'
 
 export function Entry({entry}){
 
@@ -61,7 +64,7 @@ export function Entry({entry}){
             }
 
         }
-        $('.bootbox.modal.fade.show').removeClass('show')
+        
         loadingAudio.modal('hide')
         
         
@@ -93,45 +96,99 @@ export function Entry({entry}){
         return elem
     }
 
-    const NoAudioFiles = () => {
+    const AudioFiles = () => {
         var elem = <p>No audio uploaded</p>
         if (entry.audios.length > 0){
-            elem = null
+            elem = <Button className="search-button" onClick={(e) => setLoadAudio(true)}>Load Audio</Button>
         }
         return elem
     }
 
+    const ImageFiles = () => {
+        var elem = <p>No images uploaded</p>
+        if (entry.images.length > 0){
+            elem = <Carousel>
+            {entry.images.map( (image) => {
     
+                return (
+                    <Carousel.Item>
+                        <img src={image} width="40%" height="20%" />
+                    </Carousel.Item>
+                )
+
+            })}
+            
+        </Carousel>
+        }
+        return elem
+    }
+
+
     return (
-        <Card style={{background: '#40eddc', marginTop: '2vh', marginBottom: '2vh'}}>
-            <Card.Body >
-                <Card.Title>{entry.date}</Card.Title>
-                    <Card.Text style={{textAlign: "left"}}>
-                        {entry.text}
-                    </Card.Text>
-                <Card.Title>Images</Card.Title>
-                
-                <Carousel>
-                    {entry.images.map( (image) => {
-            
-                        return (
-                            <Carousel.Item>
-                                <img src={image} width="40%" height="20%" />
-                            </Carousel.Item>
-                        )
 
-                    })}
+            <Card id="entry" >
+                <Card.Body >
+                    <Row>
+                        <Col>
+                            <Card.Title>{entry.date}</Card.Title>
+                                <Card.Text style={{textAlign: "left"}}>
+                                    {entry.text}
+                                </Card.Text>
+                        </Col>
+                    </Row>
+
+                    <Container className="attachments-container">
+
                     
-                </Carousel>
+                    <Row>
+                        <Col className="text-center">
+                            <h4>Attachments</h4>
+                        </Col>
+                    </Row>
+                    <Row>
 
-                <Card.Title>Audios</Card.Title>
+                        <Col >
+                                <Card.Title>Images</Card.Title>
+
+                                <ImageFiles />  
+      
+                            
+                            </Col>
+
+                            <Col>
+
+                                <Card.Title>Audios</Card.Title>
+                        
+                                
+                                <AudioFiles />
+                                {audioFiles.map(file => <AudioBody file={file} />)}
+
+                                    
+                            
+                            </Col>
+
+
+                    </Row>
+
+                    </Container>
+
+
+    
+
+                    
+  
+                    
+
+               
+
+      
+
+
+
+                    </Card.Body>
+                </Card>
                 
-                <Button onClick={(e) => setLoadAudio(true)}>Load Audio</Button>
-                <NoAudioFiles />
-                {audioFiles.map(file => <AudioBody file={file} />)}
-            </Card.Body>
-        </Card>
-            
+                
 
 
 

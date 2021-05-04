@@ -1,0 +1,35 @@
+.middle-card {
+    background: rgba(194, 178, 128,0.7) !important;
+    width: 18rem;
+    margin: 8vh auto;
+    box-shadow: 5px 0px 5px 0px rgb(167, 222, 218);
+
+}
+
+
+.game-info{
+    background: rgba(194, 178, 128,0.7) ;
+    width: 18em;
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, 20%);
+    padding: 10px;
+    border-radius: 5px 5px 5px 5px;
+    box-shadow: 5px 0px 5px 0px #52a3cc;
+}
+
+
+.quiz-button{
+    margin: 10px 2px !important;
+    background: #52a3cc !important;
+}
+
+.header{
+    background: #ace5d4
+}
+
+.covert-title{
+    margin-top: 5vh;
+    font-weight: 800;
+}

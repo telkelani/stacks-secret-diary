@@ -3,7 +3,8 @@ import {Navbar, Nav} from 'react-bootstrap'
 import Button from 'react-bootstrap/Button'
 import { userSession } from '../../auth';
 
-
+import './Entries.css'
+import $ from 'jquery'
 const SignOutButton = () => {
   if (!userSession.isUserSignedIn()) {
     return null;
@@ -16,15 +17,12 @@ const SignOutButton = () => {
 }
 
 export function Header(){
-  const flex = {
-    display:"flex",
-    justifyContent:"space-around",
-    gap: "10vw"}
   return (
     <Navbar expand="md"   bg="#8efa97">
 
-      <Navbar.Brand className="mr-auto" href="/">
-        <i className="fas fa-globe-americas" ></i>
+      <Navbar.Brand className="mr-auto" id="globe" href="/" >
+        <i  className="fas fa-globe-americas"></i><span> Back to Quiz</span>
+        
       </Navbar.Brand>
 
       <SignOutButton />

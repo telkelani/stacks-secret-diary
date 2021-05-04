@@ -6,7 +6,7 @@ export function UsefulLinks(){
     textAlign:'center',
     marginTop: '7vh',
     marginBottom: '3vh',
-    background: '#8efa97'}
+    background: '#95b4e6'}
     return (
         <Card style={usefulLinkStyles}>
         <Card.Title>
