@@ -42,10 +42,11 @@ export function Entry({entry}){
             closeButton: false
         })
 
-
+        console.log(files)
         for (var i=0; i<files.length;i++){
    
             const fileFromServer = await listFilesFromGaia(entry, files[i])
+            console.log(fileFromServer)
             if (fileFromServer){
 
                 var loadedFile = bootbox.dialog({

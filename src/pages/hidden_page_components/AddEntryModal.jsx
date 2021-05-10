@@ -24,22 +24,48 @@ export function AddEntryModal(props){
 
     const previewAudio = (e) => 
     {
-        setAudioFiles([])
+        const resetFileInput = () => {
+            audioUploader.current.value = null
+            setAudioFiles([])
+            props.uploadAudio(e) //Feed the changes back to entries component
+
+        }
+        
         let fileArray = Array.from(e.target.files)
 
         fileArray.forEach( file => {
             const reader = new FileReader()
             reader.readAsDataURL(file)
-            reader.onload = (e) => {
+            
+            reader.onloadend = () => {
                const fileContent = reader.result
+               const fileExt = file.name.split(".").pop()               
+               //Decoding audio to check if the file is truly an audio
+               //possible to spoof extension
+               //e.g. can save a text file as .mp3 
+               var decodeAudio = new Audio(fileContent)
+               decodeAudio.onerror = () => {
+                   alert("This is not an audio file")
+                   resetFileInput()
+               }
+               console.log(fileExt)
+
                if (file.size > 7000000){
 
                    alert("Pick a file that is less than 7MB")
-                   audioUploader.current.value = null
-                   setAudioFiles([])
+                   resetFileInput()
                }
+
+               
                else{
-                   setAudioFiles(prev => [...prev,[file.name,fileContent]])
+                if (fileExt == "mp3" || fileExt == "ogg" || fileExt == "wav" || fileExt=="m4a"){
+                    setAudioFiles(prev => [...prev,[file.name,fileContent]])
+                }
+                else{
+                    alert("File extension not supported")
+                    resetFileInput()
+                }
+                   
                }
             }
         })
@@ -116,7 +142,9 @@ export function AddEntryModal(props){
                 Close
             </Button>
             
-            <Button variant="success" onClick={() => props.addEntry(document.getElementById("new entry").value)}>
+            <Button variant="success" onClick={() => {
+                setAudioFiles([]) //Reset preview 
+                props.addEntry(document.getElementById("new entry").value)}}>
                 Add Entry
             </Button>
 

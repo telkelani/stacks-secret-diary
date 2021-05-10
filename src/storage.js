@@ -12,7 +12,7 @@ var bootstrap = require('bootstrap')
 var bootbox = require('bootbox')
 
 
-export const saveEntriesToGaia = async (entry, audios) => {
+export const saveEntriesToGaia = async (entry) => {
     var response;
     let fileResponse;
     var reqDialog = bootbox.dialog({message: '<span><i class="fa fa-spin fa-spinner"></i> Adding Entry... \n Please Do NOT refresh</span>'})
@@ -46,7 +46,7 @@ export async function saveAudioToGaia(entryId,audio){
 
     var response;
 
-
+    console.log(audio)
     const fileName = entryId+"_"+audio[0]
 
     var requestDialog = bootbox.dialog({

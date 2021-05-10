@@ -37,6 +37,8 @@ export function Entries(){
     const handleClose = () => setShow(false);
     const handleShow = () => {
         setImages([]) //When add Entry button is pressed, images are reset
+        setAudios([])
+        setAudioFiles([])
         setShow(true)};
 
     /**
@@ -90,12 +92,25 @@ export function Entries(){
 
 // Uploading Images on this component bcoz of state. the state has to be here in order for all the entries to be fetched
     const imageUpload =  (files) => {
-        console.log(files)
         files.forEach(file => {
             const reader = new FileReader()
             reader.readAsDataURL(file)
+            
             reader.onload = () => {
-                setImages(images=>[...images,reader.result])
+                var image = new Image()
+                image.src = reader.result
+                
+                //A valid image will always have a width and a height
+                if (image.width == 0 && image.height == 0){
+                    //The preview will still show a corrupt image
+                    //But it will not be uploaded as images state is reset
+                    //so vulnerability is patched
+                    alert("This is not an image file")
+                    setImages([])
+                }
+                else{
+                    setImages(images=>[...images,reader.result])
+                }
             }
         })
         
@@ -107,19 +122,27 @@ export function Entries(){
         {
             setAudios([])
             let fileArray = Array.from(e.target.files)
-    
-            fileArray.forEach( file => {
-                const reader = new FileReader()
-                reader.readAsDataURL(file)
-                reader.onload = () => {
+            if (fileArray.length == 0){
+                setAudios([])
+                setAudioFiles([])
                 
-                   const fileContent = reader.result
-                   
-                   
-                   setAudios(prev => [...prev,[file.name,fileContent]])
-                   setAudioFiles(prev => [...prev, file.name])
-                }
-            })
+            }
+            else {
+                fileArray.forEach( file => {
+                    const reader = new FileReader()
+                    reader.readAsDataURL(file)
+                    reader.onload = () => {
+                    
+                       const fileContent = reader.result
+                       
+                       
+                       setAudios(prev => [...prev,[file.name,fileContent]])
+                       setAudioFiles(prev => [...prev, file.name])
+                    }
+                })
+
+            }
+
         }
 
  
@@ -148,7 +171,7 @@ export function Entries(){
                     audios: audioFiles
                 }]
                 
-
+                console.log(audios)
                 saveEntry(newEntries, audios)
                 
                 
@@ -167,12 +190,13 @@ export function Entries(){
     /* PUTTING AND RECEIVING DATA from GAIA */
   
     const saveEntry = async (entry, audios) => {
-        let response = await saveEntriesToGaia(entry, audios)
+        let response = await saveEntriesToGaia(entry)
 
         let currentEntry = entry[entry.length-1]
         for (let i = 0; i < audios.length; i++){
             let fileResponse = await saveAudioToGaia(currentEntry.id,audios[i])
         }
+        console.log(audios.length)
         
     }
 
