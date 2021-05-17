@@ -23,6 +23,7 @@ export function Entry({entry}){
 
     const [audioFiles, setAudioFiles] = useState([])
     const [loadAudio, setLoadAudio] = useState(false)
+
     useEffect (() => {
         setLoadAudio(false)
     }, [])
@@ -36,23 +37,22 @@ export function Entry({entry}){
     async function  getAudioFiles(){
 
         const files = entry.audios
-        const filesFromServer = []
+        const filesFromGaia = []
         var loadingAudio = bootbox.dialog({
             message: `<span><i class="fa fa-spin fa-spinner"></i> Loading Audios... (loaded 0 of ${files.length}) files</span>`,
             closeButton: false
         })
 
-        console.log(files)
         for (var i=0; i<files.length;i++){
    
-            const fileFromServer = await listFilesFromGaia(entry, files[i])
-            console.log(fileFromServer)
-            if (fileFromServer){
+            const fileFromGaia = await listFilesFromGaia(entry, files[i])
+            
+            if (fileFromGaia){
 
                 var loadedFile = bootbox.dialog({
                     message: `<i class="fas fa-check-circle"></i> ${files[i]} loaded: \n\n(${i+1} of ${files.length} files)`
                 })
-                filesFromServer.push(fileFromServer)
+                filesFromGaia.push(fileFromGaia)
 
             }
             else{
@@ -67,16 +67,8 @@ export function Entry({entry}){
         }
         
         loadingAudio.modal('hide')
-        
-        
-        
 
-     
-
-        setAudioFiles(filesFromServer)
-
-        
-
+        setAudioFiles(filesFromGaia)
         
     }
     
