@@ -100,17 +100,8 @@ export function Entries(){
                 var image = new Image()
                 image.src = reader.result
                 
-                //A valid image will always have a width and a height
-                if (image.width == 0 && image.height == 0){
-                    //The preview will still show a corrupt image
-                    //But it will not be uploaded as images state is reset
-                    //so vulnerability is patched
-                    alert("This is not an image file")
-                    setImages([])
-                }
-                else{
-                    setImages(images=>[...images,reader.result])
-                }
+                setImages(images=>[...images,reader.result])
+                
             }
         })
         
