@@ -45,8 +45,6 @@ export const saveEntriesToGaia = async (entry) => {
 export async function saveAudioToGaia(entryId,audio){
 
     var response;
-
-    console.log(audio)
     const fileName = entryId+"_"+audio[0]
 
     var requestDialog = bootbox.dialog({
@@ -115,7 +113,6 @@ export async function getEntriesFromGaia(){
     }
 
     catch( error ){
-        //This is better because I am not adding an entry that says No entries, the json will just be the entries
         
         console.log(error)
         

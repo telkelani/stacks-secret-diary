@@ -69,7 +69,7 @@ export default class App extends Component {
     if (userSession.isSignInPending()) {
       userSession.handlePendingSignIn().then(userData => { 
         window.location.replace(secret_path); //For this to work on mobile had to do this
-        //Before it would go back to the home page when authenticate d
+        //Before it would go back to the home page when authenticated
         this.setState({ userData: userData });
       });
     } else if (userSession.isUserSignedIn()) {

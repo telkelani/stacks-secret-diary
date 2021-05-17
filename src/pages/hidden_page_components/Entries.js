@@ -90,7 +90,7 @@ export function Entries(){
     }
 
 
-// Uploading Images on this component bcoz of state. the state has to be here in order for all the entries to be fetched
+// Uploading Images on this component because of state. The state has to be here in order for all the entries to be fetched
     const imageUpload =  (files) => {
         files.forEach(file => {
             const reader = new FileReader()
@@ -163,19 +163,15 @@ export function Entries(){
                 setEntries( prevEntries => {
                 let id = uuid()
                 let newEntries = [...prevEntries,
-                        {
+                    {
                     id:id,
                     date:getTimeStamp(),
                     text:text,
                     images: images,
                     audios: audioFiles
                 }]
-                
-                console.log(audios)
+                  
                 saveEntry(newEntries, audios)
-                
-                
-                // listFilesFromGaia()
                 return newEntries
                 })
 
@@ -225,9 +221,6 @@ export function Entries(){
             let splitted_datetime = entry.date.split(" ")
             let splitted_date = splitted_datetime[0].split("/") 
             let splitted_time = splitted_datetime[1].split(":")
-
-    
-            
             let entry_date = new Date(splitted_date[2],splitted_date[1]-1,splitted_date[0],splitted_time[0]
                 ,splitted_time[1],splitted_time[2]) 
                 //Parsing date using new Date(string) was problematic for mobile
@@ -242,8 +235,6 @@ export function Entries(){
             }
             return entry.text.toLowerCase().indexOf(query.toLowerCase()) !== -1 
             
-    
-    
         })
         
         

@@ -55,8 +55,7 @@ export function CovertGeo() {
        * This function is what happens when we get the data. This is async function
        * Gets country data from restcountries api. 
        *
-       */
-      
+       */ 
       var response_countries = await response.data
       var countries = []
       for (let i=0;i<response_countries.length;i++){
@@ -83,7 +82,6 @@ export function CovertGeo() {
         }
       }
         
-      //Some questions are duplicated, same question asked twice. Dont care enough rn, this is just a covert app
       //Here the state is set to the first country it picked. 
       setQuestion(random_countries[0])
       //So the answer isn't always the first option, the array is shuffled here
