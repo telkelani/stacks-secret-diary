@@ -11,19 +11,29 @@ import compress from 'compress-base64'
 import { Form } from 'react-bootstrap';
 
 
-// UI code for modal ( State is in parent)
+// UI code for modal
 
 export function AddEntryModal(props){
-    const audioUploader = useRef(null)
-    const [audioFiles, setAudioFiles] = useState([])
+    const audioUploader = useRef(null) //Reference to file input for audios
 
+    //Used to add preview and manage uploads of files
+    //An array of arrays, where each element will consist of [filename, base64encoding]
+    const [audioFiles, setAudioFiles] = useState([]) 
+
+    //Audiofiles are reset when page is re-rendered
     useEffect( () => {
         setAudioFiles([])
     }, [])
     
 
+    /**
+     * Allows user to play audios they have selected so they can double check their entry submission
+     * Important as user cannot edit entry once it is submitted
+     * @param {event} e : The event handler
+     */
     const previewAudio = (e) => 
     {
+        //Resets file input selection
         const resetFileInput = () => {
             audioUploader.current.value = null
             setAudioFiles([])
@@ -39,25 +49,27 @@ export function AddEntryModal(props){
             
             reader.onloadend = () => {
                const fileContent = reader.result
-               const fileExt = file.name.split(".").pop()               
+               const fileExt = file.name.split(".").pop() //Get extension string
+
                //Decoding audio to check if the file is truly an audio
-               //possible to spoof extension
+               //prevents possible extension spoofing
                //e.g. can save a text file as .mp3 
                var decodeAudio = new Audio(fileContent)
                decodeAudio.onerror = () => {
                    alert("This is not an audio file")
                    resetFileInput()
                }
-               console.log(fileExt)
-
+               
+               //This is the limit the audio file can be due to Blockstack Gaia restrictions
                if (file.size > 7000000){
 
                    alert("Pick a file that is less than 7MB")
-                   resetFileInput()
+                   resetFileInput() //Reset selection on error
                }
 
                
                else{
+                //If the extension is right, add the file name and the data string url to the list of audiofiles
                 if (fileExt == "mp3" || fileExt == "ogg" || fileExt == "wav" || fileExt=="m4a"){
                     setAudioFiles(prev => [...prev,[file.name,fileContent]])
                 }
@@ -75,6 +87,7 @@ export function AddEntryModal(props){
     return (
         
         <div> 
+            {/* Getting the modal state (show, handleClose) from Entries.js  */}
             <Modal show={props.show} onHide={props.handleClose} animation={true}>
             <Modal.Header closeButton>
             <Modal.Title>Add Entry</Modal.Title>
@@ -102,14 +115,20 @@ export function AddEntryModal(props){
                         <Form>
                         <Form.File ref={audioUploader}
                         multiple={true}
+                        
+                        //accept/* does not work on iOS safari
                         accept=".ogg,.wav,.m4a,.mp3" 
+
+                        // Update state of Entries.js with new files, also preview the files using function in this component
                         onChange={(e) => {props.uploadAudio(e); previewAudio(e)}}>
 
                         </Form.File>
 
                 </Form>
 
-                
+                    {/* List all audio files with name and content
+                        AudioPlayer component renders <audio> HTML tag
+                     */}
                     {audioFiles.map(file => 
                     
                     <AudioPlayer fileName={file[0]} audioFile={file[1]} />)}

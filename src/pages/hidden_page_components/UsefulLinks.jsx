@@ -1,5 +1,7 @@
 import React from 'react'
 import Card from 'react-bootstrap/Card'
+
+//Just a card that allows user to click the links before
 export function UsefulLinks(){
     const usefulLinkStyles = {
     boxShadow: '5px 5px 5px 5px black',

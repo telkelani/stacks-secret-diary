@@ -14,8 +14,13 @@ import './Entries.css'
 
 import ScrollAnimation from 'react-animate-on-scroll'
 
-var bootbox = require('bootbox')
+var bootbox = require('bootbox') //Required for fancy alert boxes
 
+/**
+ * Gets the date and time at the time of entry submission
+ * Based on UK timezone
+ * @returns Date and time formatted as a string
+ */
 function getTimeStamp(){
     const now = new Date().toLocaleString("en-GB",{timeZone: 'Europe/London'})
 
@@ -30,6 +35,8 @@ function getTimeStamp(){
 
 export function Entries(){
  
+    /** INITIALIZING MODAL AND ENTRY STATE VARIABLES */
+
     /**
      * Modal State variables
      */
@@ -44,10 +51,13 @@ export function Entries(){
     /**
      * Entries state variables
      */
-    const [entries, setEntries] = useState([])
-    const [images,setImages] = useState([])
-    const [audios, setAudios] = useState([])
-    const [audioFiles, setAudioFiles] = useState([])
+    const [entries, setEntries] = useState([]) //Array of entry objects
+    const [images,setImages] = useState([]) //Array of image base64 urls
+    const [audios, setAudios] = useState([]) //Array consisting of audio file name
+    const [audioFiles, setAudioFiles] = useState([]) //Array consisting of audio base64 urls
+    /** -------------------- */
+
+    /** HANDLING RENDERING AT RUNTIME (useEffect) */
 
     /*useEffect renders this function when the DOM renders
     * The second  argument specifies that this should only when the page is loaded (mounted)*/
@@ -88,9 +98,11 @@ export function Entries(){
 
 
     }
+    /** -------------------- */
 
+    /*** UPLOADING MEDIA */
 
-// Uploading Images on this component because of state. The state has to be here in order for all the entries to be fetched
+    // Uploading Images on this component because of state. The state has to be here in order for all the entries to be fetched
     const imageUpload =  (files) => {
         files.forEach(file => {
             const reader = new FileReader()
@@ -103,12 +115,14 @@ export function Entries(){
                 setImages(images=>[...images,reader.result])
                 
             }
-        })
-        
-
-       
+        })  
         }
     
+    /**
+     * Uploading audio. 
+     * This updates the audioFiles state which prepares audio files for Gaia upload
+     * @param {event} e audio upload event
+     */
     const uploadAudio = (e) => 
         {
             setAudios([])
@@ -120,6 +134,7 @@ export function Entries(){
             }
             else {
                 fileArray.forEach( file => {
+                    //Reads file as Data URL which is useful for rendering file with src tag
                     const reader = new FileReader()
                     reader.readAsDataURL(file)
                     reader.onload = () => {
@@ -136,21 +151,38 @@ export function Entries(){
 
         }
 
- 
+    /** -------------------- */
 
-        
+
+    /** ADDING ENTRIES */
+
+    /**
+     * Submits user entries.
+     * Entries can have text, images or audio. 
+     * The entries cannot be edited
+     * @param {string} text The entry text
+     */
     const addEntry =  (text) => {
+        //If text is empty
         if (text === ''){
             alert("Please enter some text")
             
         }
+
+        //If user submits just whitespace
         else if (text.trim() == ''){
             alert("Please enter some text")
             
         }
         else{
+            // Prompt to give user last chance to edit entry before submission
             const confirmed = window.confirm("Are you sure you want to add entry? Remember, you cannot edit the entry once it is added")
             if (confirmed){
+                /**
+                 * Sets state of entries. 
+                 * An entry consists of:
+                 * -ID, -DATE, -TEXT, -ARRAY OF IMAGES, -ARRAY OF AUDIOFILES
+                 */
                 setEntries( prevEntries => {
                 let id = uuid()
                 let newEntries = [...prevEntries,
@@ -160,9 +192,9 @@ export function Entries(){
                     text:text,
                     images: images,
                     audios: audioFiles
-                }]
+                }] //Adds new entry object to array of objects
                   
-                saveEntry(newEntries, audios)
+                saveEntry(newEntries, audios) //Saves text + images and audio separately
                 return newEntries
                 })
 
@@ -174,18 +206,28 @@ export function Entries(){
             
         }
     }
-    /* PUTTING AND RECEIVING DATA from GAIA */
-  
+
+
+    /**
+     * Saving newly added entry to Gaia hub
+     * @param {array} entry 
+     * @param {array} audios 
+     */
+
     const saveEntry = async (entry, audios) => {
-        let response = await saveEntriesToGaia(entry)
+        let response = await saveEntriesToGaia(entry) //The HTTP response of saving entries to Gaia. Error handled in storage.js
 
         let currentEntry = entry[entry.length-1]
         for (let i = 0; i < audios.length; i++){
+            //Call async function that uploads each audio to Gaia hub
             let fileResponse = await saveAudioToGaia(currentEntry.id,audios[i])
         }
-        console.log(audios.length)
+
         
     }
+    /** -------------------- */
+
+    /** SEARCHING ENTRIES */
 
     /**
      *  Search by text or date (This cannot be in Search Component as this is needed to be returned here)
@@ -195,14 +237,13 @@ export function Entries(){
      const [startDate, setStartDate] = useState(null)
      const [endDate, setEndDate] = useState(null)
 
-     const NoEntries = () => {
-        var element = null
-        if (entries.length == 0){
-            element = <h3>No entries here. Click Add Entry to add a new entry</h3>
-        }
-        return element
-     }
 
+
+     /**
+      * Populates arrays of entries that it should display
+      * This varies based on the search criteria user specifies
+      * @returns The user's entries in an array
+      */
      const displayEntries = () => {
 
         
@@ -218,12 +259,15 @@ export function Entries(){
                 //Had to break down the date into separate parts and create a new date object where the year, month, day, etc 
                 //is a separate argument
                 //Month is -1 as January in javascript is 0 not 1
-    
+            
+            //If the start and end date are not empty, only the entries between the specified dates would be shown 
+            // Takes into account if user searches for text and date at the same time with && condition
             if (startDate != null && endDate!= null){
                return  entry.text.toLowerCase().indexOf(query.toLowerCase()) !== -1 && 
                (entry_date >= startDate && entry_date <= endDate)
     
             }
+            //If date is not specified, then it will return the text
             return entry.text.toLowerCase().indexOf(query.toLowerCase()) !== -1 
             
         })
@@ -233,12 +277,29 @@ export function Entries(){
     
     }
 
-
     //This returns the entries based on search (If nothing is searched will just return all entries)
     let entriestodisplay = displayEntries() 
+    /** -------------------- */
 
-    const [openSearch, setOpenSearch] = useState(false)
-    const searchButton = useRef(null)
+
+
+    /** DISPLAYING EVERYTHING */
+
+    /**
+      * Displays whether entries were uploaded or not
+      * @returns Will return null (will not show) if there are entries, a h3 element if there are no entries
+      */
+
+    const NoEntries = () => {
+        var element = null
+        if (entries.length == 0){
+            element = <h3>No entries here. Click Add Entry to add a new entry</h3>
+        }
+        return element
+    }
+
+    const [openSearch, setOpenSearch] = useState(false) //State to open or close search box
+    const searchButton = useRef(null) //Reference to Search Entries button
 
     return (
         
@@ -295,16 +356,15 @@ export function Entries(){
                 </div>
             </Collapse>
             
-            {/* Will display all entries in reverse order (most recent) */}
+            {/* Will display no entries message, if there are no entries added */}
             <NoEntries />
+
+            {/* Will display all entries in reverse order (most recent) */}
                 {entriestodisplay.reverse().map( (entry) => <Entry 
                     key={entry.id} 
                     entry={entry}
                     />)
                 }
-
-
-        
         </div>
         
         )

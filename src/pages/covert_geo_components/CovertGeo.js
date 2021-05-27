@@ -8,19 +8,9 @@ import Container from 'react-bootstrap/Container'
 import axios from 'axios'
 import _ from 'underscore'
 
+//Have to import images from directory to render them in React.
 import waterBackground from './waterBackground.gif'
-
-
 import './CovertGeo.css'
-
-
-export var secret_path = "/"+process.env.REACT_APP_SECRET_ROUTE;
-
-
-
-
-//Styles
-
 
 /**
  * 
@@ -107,7 +97,7 @@ export function CovertGeo() {
    * questionnumber is updated here
    */
   function handleClick(e) {
-    var clicked = e.target.textContent
+    var clicked = e.target.textContent //Gets text of clicked button
     
     if (clicked === question.capital){
       setScore(score+1)
@@ -145,6 +135,7 @@ export function CovertGeo() {
           What is the capital of {question.name}?
           
         </Card.Title>
+        {/* Renders buttons based on the answers generated */}
         {answers.map(answer => <Button onClick={(e) => handleClick(e)}  className="quiz-button">{answer.capital}</Button>)}            
       </Card.Body>
 
@@ -167,7 +158,7 @@ export function CovertGeo() {
   }
 
   /**
-   * renders play again button
+   * Component that renders play again button
    * @returns Play again button
    */
   const PlayAgain = () => {
@@ -187,21 +178,21 @@ export function CovertGeo() {
     )
   }
 
-  /**
-   * Covert page component will return this.
-   * If gameOVer is true, then the PlayAgain component will be rendered, if not then the Game component
-   */
+  //Had to define style here to use as inline style to override bootstrap container css
   const containerStyle={
     background: `url(${waterBackground}) no-repeat center`,
     backgroundSize: 'cover',
 
     width: '100%',
     minHeight: '100vh'
-
-    
     
   }
 
+  
+  /**
+   * Covert page component will return this.
+   * If gameOVer is true, then the PlayAgain component will be rendered, if not then the Game component
+   */
   return (
     <div style={containerStyle}>
 

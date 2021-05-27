@@ -1,26 +1,28 @@
 import React from 'react'
-import light_ocean from '../../light-ocean.jpg'
+import light_ocean from './light-ocean.jpg'
 import $ from 'jquery'
 import eraser from '../../jQuery.eraser-master/jquery.eraser.js'
 import {secret_path} from '../../components/App'
-import  Button  from 'react-bootstrap/Button'
 
-import { userSession } from '../../auth'
-import {Signin} from '../hidden_page_components/Signin'
-import {HiddenPage} from '../hidden_page_components/HiddenPage'
-import {Route} from 'react-router-dom'
 
 
 
 export function redirect(){
-    window.location.replace(secret_path)
+    window.location.replace(secret_path) //Replaces location history with the secret path (User cannot go back with back button)
 }
 export function SecretPassage(){
+    /**
+     * JQuery eraser plugin. Define the image to erase by its element id
+     * Then call redirect() function when image erased
+     * The image is a .jpg of a color which is the same as the background so image is hidden
+     * 
+     */
+   
     $(function(){
         $('#ocean').eraser({
-            size: 20,
-            completeRatio: 0.3,
-            completeFunction: redirect,
+            size: 20, //Size of eraser brush
+            completeRatio: 0.3, //When 30% of image is erased, the callback function is called
+            completeFunction: redirect, //This is the callback function to be called
         })
     })
     return (

@@ -11,6 +11,7 @@ import ScrollAnimation from 'react-animate-on-scroll'
 
 export function HiddenPage(){
 
+  //Style to override bootstrap container
   const HiddenPageStyle = {
     paddingLeft: 0,
     paddingRight: 0,
@@ -20,10 +21,10 @@ export function HiddenPage(){
   
 
 
-  
+  //Defines structure of hidden page 
+  //       75% of page Entries, 25% of page Useful Links
   return (
       <Container fluid fill="100%" style={HiddenPageStyle}>
-        
         <Header />
         <Container fluid>
           <Row>
